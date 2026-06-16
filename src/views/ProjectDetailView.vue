@@ -26,6 +26,15 @@ const project = computed(() => getProject(String(route.params.id)))
           <span v-for="t in project.stack" :key="t" class="chip">{{ t }}</span>
         </div>
 
+        <div v-if="project.repo || project.demo" class="links">
+          <a v-if="project.repo" :href="project.repo" target="_blank" rel="noopener" class="btn">
+            <AppIcon name="github" :size="17" /> View source
+          </a>
+          <a v-if="project.demo" :href="project.demo" target="_blank" rel="noopener" class="btn btn-primary">
+            <AppIcon name="external" :size="16" /> Live demo
+          </a>
+        </div>
+
         <div class="layout">
           <div class="main">
             <GlassWindow title="overview.md">
@@ -100,6 +109,12 @@ const project = computed(() => getProject(String(route.params.id)))
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-2);
+  margin-top: var(--sp-4);
+}
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
   margin-top: var(--sp-4);
 }
 .layout {

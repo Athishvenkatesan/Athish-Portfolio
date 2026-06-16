@@ -23,8 +23,8 @@
 .blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.85;
+  filter: blur(90px);
+  opacity: 0.7;
   will-change: transform;
 }
 .blob-1 {

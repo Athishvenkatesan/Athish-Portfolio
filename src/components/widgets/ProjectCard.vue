@@ -12,7 +12,8 @@ defineProps<{ project: Project }>()
     <div class="glow" :style="{ background: project.accent }" />
     <header class="top">
       <span class="cat" :style="{ color: project.accent }">{{ project.category }}</span>
-      <span v-if="project.featured" class="star">★ Featured</span>
+      <span v-if="project.featured" class="badge star">★ Featured</span>
+      <span v-else-if="project.freelance" class="badge free">Freelance</span>
     </header>
     <h3 class="title">{{ project.title }}</h3>
     <p class="tagline">{{ project.tagline }}</p>
@@ -68,10 +69,20 @@ defineProps<{ project: Project }>()
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-.star {
-  font-size: 0.72rem;
+.badge {
+  font-size: 0.7rem;
   font-weight: 700;
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+}
+.star {
   color: #febc2e;
+  background: rgba(254, 188, 46, 0.12);
+}
+.free {
+  color: var(--accent-2);
+  background: var(--chip-bg);
+  border: 1px solid var(--chip-border);
 }
 .title {
   font-size: 1.3rem;

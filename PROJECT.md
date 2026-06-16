@@ -10,7 +10,13 @@ status: building
 
 ## Current State (2026-06-16)
 
-Full site built and ready for the quality gate + first deploy.
+Full site built; profile photo + GitHub freelance projects added; dark theme refined.
+
+### Update 2 (2026-06-16)
+- **Profile photo:** added from a real photo (rotated upright via EXIF, enhanced, two crops — `public/profile-face.jpg` square head-shot, `public/profile-full.jpg` full portrait). Hero now shows the portrait; `profile.photo` / `profile.portrait` in `src/data/profile.ts`.
+- **GitHub freelance projects:** pulled from github.com/Athishvenkatesan — added **Restaurant Billing System** and **Furniture Management System**, enriched **Campus Requirement System**, and added repo links (incl. D2D → WebApp-D2D). Projects show a "Freelance" badge and a "View source" link.
+- **Dark theme:** refined palette (warmer base, calmer toned-down background blobs, higher text contrast) for better legibility.
+- Added GitHub to socials + chatbot contact answer.
 
 - **Stack:** Vue 3 (`<script setup>` + TypeScript strict) · Vite · Vue Router.
 - **Design:** macOS-style glassmorphism, light + dark theme toggle (persisted), animated gradient background, floating dock, ⌘K command palette.

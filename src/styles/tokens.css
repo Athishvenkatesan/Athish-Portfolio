@@ -48,24 +48,25 @@
 /* ---------- DARK (default) ---------- */
 :root,
 html[data-theme='dark'] {
-  --bg: #0b0d12;
-  --bg-2: #0f1219;
-  --text: #eef1f7;
-  --text-dim: #aab2c5;
-  --text-faint: #6f7891;
+  --bg: #0c0f17;
+  --bg-2: #121724;
+  --text: #f1f4fa;
+  --text-dim: #b8c0d2;
+  --text-faint: #828ca3;
 
-  --glass-bg: rgba(22, 26, 36, 0.55);
-  --glass-bg-strong: rgba(26, 31, 43, 0.78);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-hi: rgba(255, 255, 255, 0.06);
-  --glass-blur: 22px;
+  --glass-bg: rgba(24, 29, 43, 0.62);
+  --glass-bg-strong: rgba(28, 34, 50, 0.84);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-hi: rgba(255, 255, 255, 0.05);
+  --glass-blur: 24px;
 
-  --chip-bg: rgba(255, 255, 255, 0.06);
-  --chip-border: rgba(255, 255, 255, 0.1);
+  --chip-bg: rgba(255, 255, 255, 0.055);
+  --chip-border: rgba(255, 255, 255, 0.09);
 
-  --blob-1: rgba(124, 92, 255, 0.55);
-  --blob-2: rgba(25, 194, 168, 0.45);
-  --blob-3: rgba(255, 92, 162, 0.38);
+  /* Toned-down, calmer accents so glass + text stay readable */
+  --blob-1: rgba(112, 84, 232, 0.42);
+  --blob-2: rgba(25, 170, 150, 0.3);
+  --blob-3: rgba(214, 90, 158, 0.24);
 
   color-scheme: dark;
 }

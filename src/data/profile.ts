@@ -27,9 +27,12 @@ export const profile = {
   whatsappMessage:
     "Hi Athish, I came across your portfolio and I'd love to connect with you regarding an opportunity.",
   linkedin: 'https://www.linkedin.com/in/athish-venkatesan',
-  /** Drop public/profile.jpg to show a photo; null falls back to the monogram. */
-  photo: null as string | null,
+  /** Square head-and-shoulders crop — used for avatars. null = "AV" monogram. */
+  photo: '/profile-face.jpg' as string | null,
+  /** Full-length portrait — used for the hero visual. */
+  portrait: '/profile-full.jpg' as string | null,
   resumePath: '/AthishV-Resume.pdf',
+  github: 'https://github.com/Athishvenkatesan',
 
   about:
     'Power Platform Developer with 2.6 years of experience designing, developing and deploying automation solutions using Power Automate, Power Apps and SharePoint — and an equally strong front-end engineer working in React 19, TypeScript and Vite. I build end-to-end workflows, integrate applications and craft clean, responsive interfaces, with a focus on solving real business problems in fast-moving team environments.',
@@ -37,6 +40,7 @@ export const profile = {
 
 export const socials: SocialLink[] = [
   { label: 'LinkedIn', href: profile.linkedin, icon: 'linkedin' },
+  { label: 'GitHub', href: profile.github, icon: 'github' },
   { label: 'Email', href: `mailto:${profile.email}`, icon: 'mail' },
   { label: 'Phone', href: `tel:+${profile.whatsapp}`, icon: 'phone' },
 ]

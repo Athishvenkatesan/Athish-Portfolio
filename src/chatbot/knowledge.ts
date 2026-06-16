@@ -83,9 +83,9 @@ export const intents: Intent[] = [
   },
   {
     id: 'contact',
-    keywords: ['contact', 'reach', 'email', 'phone', 'connect', 'linkedin', 'message', 'whatsapp'],
+    keywords: ['contact', 'reach', 'email', 'phone', 'connect', 'linkedin', 'message', 'whatsapp', 'github', 'source', 'code'],
     answer: () =>
-      `You can reach Athish here:\n\n• 📧 Email: ${profile.email}\n• 📱 WhatsApp: [chat now](${whatsappLink()})\n• 💼 LinkedIn: ${profile.linkedin}\n• ☎️ Phone: ${profile.phoneDisplay}`,
+      `You can reach Athish here:\n\n• 📧 Email: ${profile.email}\n• 📱 WhatsApp: [chat now](${whatsappLink()})\n• 💼 LinkedIn: ${profile.linkedin}\n• 🐙 GitHub: ${profile.github}\n• ☎️ Phone: ${profile.phoneDisplay}`,
   },
   {
     id: 'hire',

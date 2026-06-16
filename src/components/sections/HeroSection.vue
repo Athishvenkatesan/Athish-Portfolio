@@ -53,13 +53,20 @@ const stats = [
 
       <div class="visual">
         <GlassWindow title="athish.profile" subtitle="~/portfolio">
-          <div class="avatar-wrap">
-            <img v-if="profile.photo" :src="profile.photo" :alt="profile.name" class="photo" />
+          <div class="portrait-frame">
+            <img
+              v-if="profile.portrait"
+              :src="profile.portrait"
+              :alt="profile.name"
+              class="portrait"
+              loading="eager"
+            />
+            <img v-else-if="profile.photo" :src="profile.photo" :alt="profile.name" class="portrait" />
             <div v-else class="monogram">{{ profile.initials }}</div>
-          </div>
-          <div class="card-meta">
-            <h3>{{ profile.name }}</h3>
-            <p>{{ profile.location }}</p>
+            <div class="portrait-meta">
+              <h3>{{ profile.name }}</h3>
+              <p>{{ profile.location }}</p>
+            </div>
           </div>
           <div class="stats">
             <div v-for="s in stats" :key="s.label" class="stat">
@@ -149,39 +156,46 @@ const stats = [
   transform: translateY(-3px);
   color: var(--accent);
 }
-.avatar-wrap {
-  display: grid;
-  place-items: center;
-  margin-bottom: var(--sp-4);
+.portrait-frame {
+  position: relative;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--chip-bg);
 }
-.photo,
-.monogram {
-  width: 130px;
-  height: 130px;
-  border-radius: 28px;
-}
-.photo {
+.portrait {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  object-position: center 22%;
+  display: block;
 }
 .monogram {
+  width: 100%;
+  height: 100%;
   display: grid;
   place-items: center;
-  font-size: 3.2rem;
+  font-size: 3.6rem;
   font-weight: 800;
   color: #fff;
   background: linear-gradient(140deg, var(--accent), var(--accent-2));
-  box-shadow: var(--shadow-2);
 }
-.card-meta {
-  text-align: center;
+.portrait-meta {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 28px 18px 14px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent);
+  color: #fff;
 }
-.card-meta h3 {
-  font-size: 1.25rem;
+.portrait-meta h3 {
+  font-size: 1.2rem;
   font-weight: 700;
 }
-.card-meta p {
-  color: var(--text-dim);
-  font-size: 0.9rem;
+.portrait-meta p {
+  font-size: 0.86rem;
+  opacity: 0.85;
 }
 .stats {
   display: grid;

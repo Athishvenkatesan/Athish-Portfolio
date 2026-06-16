@@ -11,6 +11,8 @@ export interface Project {
   title: string
   category: ProjectCategory
   featured?: boolean
+  /** Flags personal/freelance builds (shown with a badge). */
+  freelance?: boolean
   tagline: string
   summary: string
   /** Long-form description rendered on the detail page (array = paragraphs). */
@@ -20,6 +22,9 @@ export interface Project {
   /** Optional "how Athish handled it end to end" ownership steps. */
   ownership?: string[]
   outcomes?: string[]
+  /** Public source link (GitHub) and optional live demo. */
+  repo?: string
+  demo?: string
   accent: string
 }
 
@@ -69,6 +74,7 @@ export const projects: Project[] = [
       'Replaced multiple disconnected systems with one centralized platform.',
       'Gave every stakeholder real-time, role-appropriate visibility across departments.',
     ],
+    repo: 'https://github.com/Athishvenkatesan/WebApp-D2D',
   },
   {
     id: 'transmission-power',
@@ -133,20 +139,69 @@ export const projects: Project[] = [
     id: 'campus-requirement-system',
     title: 'Campus Requirement System',
     category: 'Web',
+    freelance: true,
     accent: '#19c2a8',
-    tagline: 'Placement registration & eligibility automation',
+    tagline: 'A job portal that streamlines campus placements',
     summary:
-      'Automates campus placement: student registration, company listings, applicant details and eligibility checks for each company, plus selected-student tracking.',
+      'A full job-portal web app for campus placements: students register, browse companies, check eligibility and apply; placement officers track applied and selected students and broadcast updates to departments.',
     description: [
-      'A system to automate and simplify the campus placement process — registration, company views, details of applied students, and checking whether a student meets a given company’s eligibility criteria.',
-      'It also lets coordinators view the list of selected students per company.',
+      'The Campus Requirement System is a job portal built to streamline the entire campus placement process. Students can register, view detailed company profiles, check their eligibility against each company’s criteria, and apply for openings in a few clicks.',
+      'Placement officers get an administrative side to track applied and selected students per company and send placement updates out to the relevant departments — replacing scattered spreadsheets and notice-board announcements with one organized portal.',
     ],
-    stack: ['PHP', 'MySQL', 'HTML/CSS', 'JavaScript'],
+    stack: ['PHP', 'MySQL', 'HTML', 'CSS', 'JavaScript'],
     highlights: [
       'Student registration & company listings',
-      'Automated eligibility checking',
-      'Applicant and selected-student tracking',
+      'Automated eligibility checking per company',
+      'Apply-to-job workflow',
+      'Officer dashboard: applied & selected-student tracking',
+      'Department-wide placement update broadcasts',
     ],
+    repo: 'https://github.com/Athishvenkatesan/Campus_Requirement_System',
+  },
+  {
+    id: 'restaurant-billing-system',
+    title: 'Restaurant Billing System',
+    category: 'Web',
+    freelance: true,
+    accent: '#ff7ab6',
+    tagline: 'Web-based POS & billing for restaurants',
+    summary:
+      'A PHP + MySQL restaurant billing system that automates customer billing, order tracking and payment processing — with split billing, tax/discount handling, sales reporting and multi-mode payments.',
+    description: [
+      'A web-based Restaurant Billing System developed in PHP and MySQL to automate and streamline day-to-day restaurant operations — from taking orders to settling the bill.',
+      'It handles the full billing flow: order tracking, tax and discount calculation, split billing across guests, and multiple payment modes. Built-in sales reporting gives owners a clear view of revenue and performance.',
+    ],
+    stack: ['PHP', 'MySQL', 'HTML', 'CSS', 'JavaScript'],
+    highlights: [
+      'Automated customer billing & order tracking',
+      'Split billing across multiple guests',
+      'Tax and discount handling',
+      'Multi-mode payment support',
+      'Sales reporting for owners',
+    ],
+    repo: 'https://github.com/Athishvenkatesan/Restaurant_Billing_System',
+  },
+  {
+    id: 'furniture-management-system',
+    title: 'Furniture Management System',
+    category: 'Web',
+    freelance: true,
+    accent: '#7c5cff',
+    tagline: 'Online furniture booking & inventory',
+    summary:
+      'An online furniture booking platform where users browse, select and book furniture by category — with a PHP/MySQL backend that streamlines shopping for customers and inventory handling for sellers.',
+    description: [
+      'An Online Furniture Booking System that lets customers browse, select and book furniture items by category, making the shopping experience quick and intuitive.',
+      'The frontend is built with HTML, CSS and JavaScript; PHP powers the backend logic and MySQL stores catalogue, orders and inventory — helping sellers keep stock organized while customers shop.',
+    ],
+    stack: ['PHP', 'MySQL', 'HTML', 'CSS', 'JavaScript'],
+    highlights: [
+      'Browse & book furniture by category',
+      'Customer-friendly shopping flow',
+      'Order management',
+      'Improved inventory handling for sellers',
+    ],
+    repo: 'https://github.com/Athishvenkatesan/Furniture_Management_System',
   },
   {
     id: 'cash-forecasting-agent',
