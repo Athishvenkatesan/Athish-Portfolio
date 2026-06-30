@@ -1,4 +1,4 @@
-<!-- ProjectCard — glass project card with hover tilt and a "view" affordance. -->
+<!-- ProjectCard — glass project card with hover tilt and source/live actions. -->
 <script setup lang="ts">
 import type { Project } from '@/data/projects'
 import { RouterLink } from 'vue-router'
@@ -8,7 +8,7 @@ defineProps<{ project: Project }>()
 </script>
 
 <template>
-  <RouterLink :to="`/projects/${project.id}`" class="card glass" :class="{ featured: project.featured }">
+  <article class="card glass" :class="{ featured: project.featured }">
     <div class="glow" :style="{ background: project.accent }" />
     <header class="top">
       <span class="cat" :style="{ color: project.accent }">{{ project.category }}</span>
@@ -22,8 +22,39 @@ defineProps<{ project: Project }>()
       <span v-for="t in project.stack.slice(0, 5)" :key="t" class="chip">{{ t }}</span>
       <span v-if="project.stack.length > 5" class="chip more">+{{ project.stack.length - 5 }}</span>
     </div>
-    <span class="view">View case study <AppIcon name="arrow" :size="16" /></span>
-  </RouterLink>
+
+    <footer class="actions">
+      <!-- Stretched link: makes the whole card open the case study. -->
+      <RouterLink :to="`/projects/${project.id}`" class="view stretched">
+        View case study <AppIcon name="arrow" :size="16" />
+      </RouterLink>
+
+      <span v-if="project.repo || project.demo" class="ext-links">
+        <a
+          v-if="project.repo"
+          :href="project.repo"
+          target="_blank"
+          rel="noopener"
+          class="ext"
+          aria-label="View source on GitHub"
+          @click.stop
+        >
+          <AppIcon name="github" :size="16" />
+        </a>
+        <a
+          v-if="project.demo"
+          :href="project.demo"
+          target="_blank"
+          rel="noopener"
+          class="ext live"
+          aria-label="Open the live app in a new tab"
+          @click.stop
+        >
+          <AppIcon name="external" :size="15" /> Live
+        </a>
+      </span>
+    </footer>
+  </article>
 </template>
 
 <style scoped>
@@ -49,10 +80,11 @@ defineProps<{ project: Project }>()
   filter: blur(70px);
   opacity: 0.18;
   pointer-events: none;
-  transition: opacity var(--dur) var(--ease);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 .card:hover .glow {
   opacity: 0.34;
+  transform: translate(-10px, 10px) scale(1.1);
 }
 .featured {
   grid-column: span 2;
@@ -109,18 +141,61 @@ defineProps<{ project: Project }>()
 .more {
   color: var(--accent);
 }
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+}
 .view {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: var(--sp-4);
   font-size: 0.88rem;
   font-weight: 600;
   color: var(--accent);
   transition: gap var(--dur-fast) var(--ease);
 }
+/* Stretch the case-study link across the whole card. */
+.stretched::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
 .card:hover .view {
   gap: 12px;
+}
+.ext-links {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.ext {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: var(--r-pill);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: var(--chip-bg);
+  border: 1px solid var(--chip-border);
+  transition: transform var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
+}
+.ext:hover {
+  transform: translateY(-2px);
+  color: var(--text);
+}
+.ext.live {
+  color: #fff;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  border-color: transparent;
 }
 @media (max-width: 760px) {
   .featured {

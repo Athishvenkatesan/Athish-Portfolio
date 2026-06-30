@@ -60,8 +60,9 @@ import { whatsappLink } from '@/data/profile'
   }
 }
 @media (max-width: 680px) {
+  /* Stacked above the chat launcher, which itself clears the dock. */
   .wa-fab {
-    bottom: 70px;
+    bottom: 142px;
     right: 14px;
     width: 50px;
     height: 50px;

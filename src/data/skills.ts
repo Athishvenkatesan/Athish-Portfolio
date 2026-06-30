@@ -66,7 +66,7 @@ export const skillGroups: SkillGroup[] = [
   {
     title: 'Microsoft Power Platform',
     icon: 'grid',
-    blurb: '2.6 years of automation delivery.',
+    blurb: 'Automation delivery across Ducont & ROR.',
     skills: [
       { name: 'Power Apps (incl. Code Apps)', level: 90 },
       { name: 'Power Automate', level: 90 },

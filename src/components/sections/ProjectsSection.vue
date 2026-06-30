@@ -36,7 +36,12 @@ const visible = computed(() =>
       </div>
 
       <div class="grid">
-        <ProjectCard v-for="p in visible" :key="p.id" :project="p" v-reveal />
+        <ProjectCard
+          v-for="(p, i) in visible"
+          :key="p.id"
+          :project="p"
+          v-reveal="Math.min(i * 70, 350)"
+        />
       </div>
     </div>
   </section>

@@ -13,7 +13,15 @@ const router = createRouter({
     },
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
-  scrollBehavior(to: RouteLocationNormalized) {
+  scrollBehavior(to: RouteLocationNormalized, _from, savedPosition) {
+    // Back/forward navigation — restore exactly where the user was.
+    // Wait for the out-in route transition + layout so the target page has
+    // its full height before we restore the scroll offset.
+    if (savedPosition) {
+      return new Promise((resolve) => {
+        setTimeout(() => resolve(savedPosition), 320)
+      })
+    }
     if (to.hash) {
       return { el: to.hash, behavior: 'smooth', top: 70 }
     }

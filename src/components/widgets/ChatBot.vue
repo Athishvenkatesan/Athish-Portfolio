@@ -289,9 +289,10 @@ function toggle() {
   transform: translateY(12px) scale(0.96);
 }
 @media (max-width: 680px) {
+  /* Lift the launcher above the bottom-center dock so they never overlap. */
   .chat-root {
     right: 14px;
-    bottom: 12px;
+    bottom: 78px;
   }
 }
 </style>

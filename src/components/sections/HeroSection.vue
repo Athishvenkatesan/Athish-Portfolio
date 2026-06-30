@@ -4,6 +4,7 @@ import { profile, socials, whatsappLink } from '@/data/profile'
 import { projects } from '@/data/projects'
 import GlassWindow from '@/components/layout/GlassWindow.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
+import CountUp from '@/components/ui/CountUp.vue'
 
 const stats = [
   { value: `${profile.experienceYears}y`, label: 'Experience' },
@@ -70,7 +71,7 @@ const stats = [
           </div>
           <div class="stats">
             <div v-for="s in stats" :key="s.label" class="stat">
-              <span class="stat-val gradient-text">{{ s.value }}</span>
+              <span class="stat-val gradient-text"><CountUp :value="s.value" /></span>
               <span class="stat-lbl">{{ s.label }}</span>
             </div>
           </div>
@@ -89,6 +90,48 @@ const stats = [
   grid-template-columns: 1.25fr 0.9fr;
   gap: clamp(28px, 5vw, 64px);
   align-items: center;
+}
+
+/* Staggered entrance for the hero copy + visual. */
+.intro > * {
+  animation: heroIn 0.7s var(--ease) both;
+}
+.intro > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.intro > *:nth-child(2) {
+  animation-delay: 0.12s;
+}
+.intro > *:nth-child(3) {
+  animation-delay: 0.19s;
+}
+.intro > *:nth-child(4) {
+  animation-delay: 0.26s;
+}
+.intro > *:nth-child(5) {
+  animation-delay: 0.33s;
+}
+.intro > *:nth-child(6) {
+  animation-delay: 0.4s;
+}
+.visual {
+  animation: heroIn 0.85s var(--ease) 0.28s both;
+}
+@keyframes heroIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro > *,
+  .visual {
+    animation: none;
+  }
 }
 .pulse {
   width: 8px;

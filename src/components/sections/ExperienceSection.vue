@@ -12,7 +12,7 @@ import { experience } from '@/data/experience'
       <div class="timeline">
         <article
           v-for="(item, i) in experience"
-          :key="item.org"
+          :key="`${item.org}-${item.role}`"
           class="item"
           v-reveal="i * 90"
         >

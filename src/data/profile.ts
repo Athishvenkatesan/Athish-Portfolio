@@ -12,14 +12,14 @@ export interface SocialLink {
 export const profile = {
   name: 'Athish V',
   initials: 'AV',
-  /** Hero title — kept as the resume title per the owner's choice. */
-  title: 'Power Platform Developer',
+  /** Hero title — blends the current Ducont role with the Power Platform brand. */
+  title: 'Power Platform & Automation Engineer',
   /** Secondary line that surfaces the React / front-end capability. */
   subtitle: 'React · TypeScript front-end engineer who ships enterprise web apps end to end',
   tagline:
-    'I design, build and deploy automation and front-end solutions — from React + TypeScript single-page apps to Power Apps, Power Automate and Copilot Studio workflows.',
-  experienceYears: '2.6',
-  location: 'Madurai, India',
+    'I design, build and deploy automation and front-end solutions — from React + TypeScript single-page apps to Power Apps, Power Automate and Copilot Studio agents.',
+  experienceYears: '2+',
+  location: 'Dubai, UAE',
   email: 'venkatesanathish@gmail.com',
   phoneDisplay: '+91 95859 91586',
   /** International format, no symbols — used for the wa.me deep link. */
@@ -35,7 +35,7 @@ export const profile = {
   github: 'https://github.com/Athishvenkatesan',
 
   about:
-    'Power Platform Developer with 2.6 years of experience designing, developing and deploying automation solutions using Power Automate, Power Apps and SharePoint — and an equally strong front-end engineer working in React 19, TypeScript and Vite. I build end-to-end workflows, integrate applications and craft clean, responsive interfaces, with a focus on solving real business problems in fast-moving team environments.',
+    'Automation Engineer at Ducont Systems in Dubai, building dynamic Power Apps integrated with SharePoint and Dataverse, automating workflows with Power Automate, and creating agentic AI solutions with Copilot Studio across Teams, M365 and web apps. Equally strong as a front-end engineer in React 19, TypeScript and Vite — I build end-to-end workflows, integrate enterprise systems and craft clean, responsive interfaces, with a focus on solving real business problems in fast-moving team environments.',
 }
 
 export const socials: SocialLink[] = [

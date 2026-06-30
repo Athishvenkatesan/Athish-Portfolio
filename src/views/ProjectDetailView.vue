@@ -31,7 +31,7 @@ const project = computed(() => getProject(String(route.params.id)))
             <AppIcon name="github" :size="17" /> View source
           </a>
           <a v-if="project.demo" :href="project.demo" target="_blank" rel="noopener" class="btn btn-primary">
-            <AppIcon name="external" :size="16" /> Live demo
+            <AppIcon name="external" :size="16" /> Open live app
           </a>
         </div>
 
@@ -80,7 +80,10 @@ const project = computed(() => getProject(String(route.params.id)))
   padding-top: clamp(96px, 14vh, 150px);
 }
 .back {
-  display: inline-flex;
+  /* Block-level (flex, fit-content) so it sits on its own row — the global
+     .eyebrow that follows is inline-flex and would otherwise share this line. */
+  display: flex;
+  width: fit-content;
   align-items: center;
   gap: 6px;
   color: var(--text-dim);
