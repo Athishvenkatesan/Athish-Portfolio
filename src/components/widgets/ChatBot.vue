@@ -15,6 +15,7 @@ import { profile } from '@/data/profile'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import SkillRadarChart from '@/components/charts/SkillRadarChart.vue'
 import TopSkillsBars from '@/components/charts/TopSkillsBars.vue'
+import { useScrollDirection } from '@/composables/useScrollDirection'
 
 interface Msg {
   from: 'bot' | 'user'
@@ -22,6 +23,7 @@ interface Msg {
   chart?: ChatChartKind
 }
 
+const { hidden } = useScrollDirection()
 const open = ref(false)
 const input = ref('')
 const typing = ref(false)
@@ -102,7 +104,12 @@ function toggle() {
       </section>
     </transition>
 
-    <button class="launcher" :class="{ open }" aria-label="Open chat assistant" @click="toggle">
+    <button
+      class="launcher"
+      :class="{ open, 'scroll-hidden': hidden && !open }"
+      aria-label="Open chat assistant"
+      @click="toggle"
+    >
       <AppIcon :name="open ? 'close' : 'chat'" :size="24" />
     </button>
   </div>
@@ -124,7 +131,7 @@ function toggle() {
   color: #fff;
   background: var(--accent);
   box-shadow: 0 10px 28px var(--accent-soft);
-  transition: transform var(--dur-fast) var(--ease);
+  transition: transform var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
 }
 .launcher:hover {
   transform: scale(1.08);
@@ -344,6 +351,13 @@ function toggle() {
   .chat-root {
     right: 14px;
     bottom: 78px;
+  }
+  /* Tucks out of the way while actively scrolling, so it doesn't sit on top
+     of whatever section happens to pass underneath on a short screen. */
+  .launcher.scroll-hidden {
+    opacity: 0;
+    transform: translateX(16px) scale(0.85);
+    pointer-events: none;
   }
 }
 </style>

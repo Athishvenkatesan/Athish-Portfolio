@@ -198,6 +198,13 @@ textarea:focus {
   color: var(--accent);
 }
 @media (max-width: 680px) {
+  /* The floating dock is fixed to the bottom of the screen — without this,
+     the last-scrolled content (this footer) always ends up sitting under it. */
+  .footer {
+    margin-bottom: 84px;
+  }
+}
+@media (max-width: 680px) {
   .grid {
     grid-template-columns: 1fr;
   }

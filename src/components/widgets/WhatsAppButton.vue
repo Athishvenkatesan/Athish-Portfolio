@@ -1,6 +1,9 @@
 <!-- WhatsAppButton — floating click-to-chat FAB with prefilled message. -->
 <script setup lang="ts">
 import { whatsappLink } from '@/data/profile'
+import { useScrollDirection } from '@/composables/useScrollDirection'
+
+const { hidden } = useScrollDirection()
 </script>
 
 <template>
@@ -9,6 +12,7 @@ import { whatsappLink } from '@/data/profile'
     target="_blank"
     rel="noopener"
     class="wa-fab"
+    :class="{ 'scroll-hidden': hidden }"
     aria-label="Chat on WhatsApp"
   >
     <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true">
@@ -66,6 +70,14 @@ import { whatsappLink } from '@/data/profile'
     right: 14px;
     width: 50px;
     height: 50px;
+    transition: transform var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
+  }
+  /* Tucks out of the way while actively scrolling, so it doesn't sit on top
+     of whatever section happens to pass underneath on a short screen. */
+  .wa-fab.scroll-hidden {
+    opacity: 0;
+    transform: translateX(16px) scale(0.85);
+    pointer-events: none;
   }
 }
 @media (prefers-reduced-motion: reduce) {
