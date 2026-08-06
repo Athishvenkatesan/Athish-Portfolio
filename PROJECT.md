@@ -12,6 +12,10 @@ status: building
 
 Full site rebuilt onto a flat, spacious, Apple-marketing-page-inspired visual language (moved off "macOS glassmorphism"); project cards support one in-page "Run in Browser" live preview button plus a "View Source Code" GitHub link; new `/analysis` page visualizes skill strength + a project timeline; profile photo + GitHub freelance projects in place.
 
+### Update 22 (2026-08-06) — Hero copy rewrite
+- Replaced the Hero's role/sub/tagline copy in `src/data/profile.ts` with the owner's updated positioning: `title` now reads "Power Platform & Automation Engineer | React & TypeScript Front-End Developer" (previously just the first half — the new combined line replaces what would otherwise have been a literal duplicate if only `subtitle`/`tagline` had changed), `subtitle` is the new concise intro sentence, `tagline` is the new detailed expertise paragraph (Dataverse/SharePoint/REST APIs integration, Copilot Studio agents, etc.).
+- Verified the longer copy wraps cleanly with no overlap/truncation at desktop, tablet, and mobile widths, in both themes. Clean type-check + production build.
+
 ### Update 21 (2026-08-06) — Mobile: floating WhatsApp/chat FABs covering content
 - Reported on a real Android phone: the stacked floating WhatsApp + chat-launcher buttons (bottom-right) sat directly on top of page text/data mid-scroll (e.g. the Analysis page's "Top individual skills" bars, the Contact footer) — small mobile screens have proportionally much less room, so these fixed overlays cover a meaningful chunk of content.
 - Added `useScrollDirection` composable (`src/composables/`) — tracks scroll and exposes `hidden`, true while actively scrolling down, false on scroll-up or ~500ms after scrolling settles. Wired into `WhatsAppButton.vue` and the `ChatBot.vue` launcher (not the open chat panel) as a `scroll-hidden` class, fade+slide out, effective only under the existing `max-width: 680px` mobile breakpoint — desktop is untouched (verified: opacity stays 1 while scrolling on desktop).
