@@ -1,15 +1,21 @@
 <!-- MenuBar — macOS-style frosted top bar: brand, section nav, theme + actions. -->
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { RouterLink } from 'vue-router'
 import { profile } from '@/data/profile'
+import { useSectionNav } from '@/composables/useSectionNav'
 import ThemeToggle from './ThemeToggle.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
+const { goToSection } = useSectionNav()
+
+/** `id` items scroll to a home-page section; `to` items are real page routes. */
 const navItems = [
   { label: 'About', id: 'about' },
   { label: 'Skills', id: 'skills' },
   { label: 'Experience', id: 'experience' },
   { label: 'Projects', id: 'projects' },
+  { label: 'Analysis', to: '/analysis' },
   { label: 'Contact', id: 'contact' },
 ]
 
@@ -24,17 +30,17 @@ const emit = defineEmits<{ (e: 'open-palette'): void }>()
 <template>
   <header class="menubar" :class="{ scrolled }">
     <div class="bar container">
-      <a href="#top" class="brand">
-        <span class="dots" aria-hidden="true"><i /><i /><i /></span>
+      <a href="#top" class="brand" @click.prevent="goToSection('top')">
         <span class="brand-name">{{ profile.initials }}</span>
-        <span class="brand-sep">/</span>
-        <span class="brand-role">{{ profile.title }}</span>
       </a>
 
       <nav class="nav" aria-label="Primary">
-        <a v-for="item in navItems" :key="item.id" :href="`#${item.id}`" class="nav-link">
-          {{ item.label }}
-        </a>
+        <template v-for="item in navItems" :key="item.label">
+          <RouterLink v-if="item.to" :to="item.to" class="nav-link">{{ item.label }}</RouterLink>
+          <a v-else :href="`#${item.id}`" class="nav-link" @click.prevent="goToSection(item.id!)">
+            {{ item.label }}
+          </a>
+        </template>
       </nav>
 
       <div class="actions">
@@ -42,7 +48,7 @@ const emit = defineEmits<{ (e: 'open-palette'): void }>()
           <AppIcon name="search" :size="15" />
           <kbd>⌘K</kbd>
         </button>
-        <a :href="profile.resumePath" download class="resume-btn">
+        <a :href="profile.resumePath" download class="resume-btn btn-solid">
           <AppIcon name="download" :size="15" />
           <span>Resume</span>
         </a>
@@ -75,62 +81,36 @@ const emit = defineEmits<{ (e: 'open-palette'): void }>()
   transition: all var(--dur) var(--ease);
 }
 .scrolled .bar {
-  background: var(--glass-bg-strong);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
-  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
-  border-color: var(--glass-border);
-  box-shadow: var(--shadow-1);
+  background: var(--surface);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border-color: var(--surface-border);
 }
 .brand {
   display: flex;
   align-items: center;
-  gap: var(--sp-2);
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
   white-space: nowrap;
-}
-.dots {
-  display: inline-flex;
-  gap: 5px;
-  margin-right: 4px;
-}
-.dots i {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  display: block;
-}
-.dots i:nth-child(1) {
-  background: #ff5f57;
-}
-.dots i:nth-child(2) {
-  background: #febc2e;
-}
-.dots i:nth-child(3) {
-  background: #28c840;
-}
-.brand-sep {
-  color: var(--text-faint);
-}
-.brand-role {
-  color: var(--text-dim);
-  font-weight: 500;
 }
 .nav {
   display: flex;
-  gap: var(--sp-1);
+  gap: var(--sp-5);
 }
 .nav-link {
-  padding: 7px 14px;
-  border-radius: var(--r-pill);
-  font-size: 0.9rem;
+  padding: 7px 2px;
+  font-size: 0.86rem;
   font-weight: 500;
+  letter-spacing: -0.005em;
   color: var(--text-dim);
-  transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+  transition: color var(--dur-fast) var(--ease);
 }
 .nav-link:hover {
   color: var(--text);
-  background: var(--chip-bg);
+}
+.nav-link.router-link-exact-active {
+  color: var(--text);
 }
 .actions {
   display: flex;
@@ -143,8 +123,8 @@ const emit = defineEmits<{ (e: 'open-palette'): void }>()
   gap: var(--sp-2);
   padding: 6px 10px;
   border-radius: var(--r-pill);
-  border: 1px solid var(--glass-border);
-  background: var(--chip-bg);
+  border: 1px solid var(--surface-border);
+  background: transparent;
   color: var(--text-dim);
   font-size: 0.82rem;
 }
@@ -154,21 +134,12 @@ const emit = defineEmits<{ (e: 'open-palette'): void }>()
   color: var(--text-faint);
 }
 .resume-btn {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  padding: 7px 14px;
-  border-radius: var(--r-pill);
-  font-size: 0.88rem;
-  font-weight: 600;
-  background: linear-gradient(120deg, var(--accent), var(--accent-2));
-  color: #fff;
+  padding: 8px 16px;
+  font-size: 0.85rem;
 }
 
 @media (max-width: 900px) {
   .nav,
-  .brand-role,
-  .brand-sep,
   .cmd {
     display: none;
   }

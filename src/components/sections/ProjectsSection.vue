@@ -69,7 +69,7 @@ const visible = computed(() =>
 }
 .filter.active {
   color: #fff;
-  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  background: var(--accent);
   border-color: transparent;
 }
 .grid {

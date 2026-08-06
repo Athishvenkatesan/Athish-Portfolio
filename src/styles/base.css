@@ -75,7 +75,7 @@ img {
 }
 
 .section {
-  padding-block: clamp(48px, 9vw, 96px);
+  padding-block: clamp(40px, 6vw, 68px);
   position: relative;
 }
 
@@ -105,13 +105,6 @@ img {
   font-size: 1.02rem;
 }
 
-.gradient-text {
-  background: linear-gradient(110deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
 /* ---------- Glass surface ---------- */
 .glass {
   background: var(--glass-bg);
@@ -124,6 +117,14 @@ img {
 
 .glass-strong {
   background: var(--glass-bg-strong);
+}
+
+/* ---------- Flat surface (Apple-style opaque card, no blur/tint) ---------- */
+.surface {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--r-2xl);
+  box-shadow: var(--shadow-1);
 }
 
 /* ---------- Buttons ---------- */
@@ -151,7 +152,7 @@ img {
   transform: translateY(0);
 }
 .btn-primary {
-  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  background: var(--accent);
   color: #fff;
   border-color: transparent;
 }
@@ -159,7 +160,7 @@ img {
   box-shadow: 0 10px 30px var(--accent-soft);
 }
 .btn-wa {
-  background: linear-gradient(120deg, #25d366, #128c7e);
+  background: #25d366;
   color: #fff;
   border-color: transparent;
 }
@@ -176,6 +177,57 @@ img {
   font-size: 0.86rem;
   font-weight: 500;
   color: var(--text-dim);
+}
+
+/* ---------- Apple-style type scale (additive — used by migrated sections) ---------- */
+.text-hero {
+  font-size: var(--fs-hero);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.text-display {
+  font-size: var(--fs-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* ---------- Flat solid button (additive — no gradient, no blur) ---------- */
+.btn-solid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: 14px 28px;
+  border-radius: var(--r-pill);
+  font-weight: 600;
+  font-size: 0.95rem;
+  background: var(--text);
+  color: var(--bg);
+  border: 1px solid transparent;
+  transition: transform var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
+}
+.btn-solid:hover {
+  transform: translateY(-2px);
+  opacity: 0.88;
+}
+.btn-solid:active {
+  transform: translateY(0);
+}
+
+/* ---------- Secondary text link with animating trailing arrow (additive) ---------- */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  transition: gap var(--dur-fast) var(--ease);
+}
+.link-arrow:hover {
+  gap: 12px;
 }
 
 /* ---------- Scroll reveal ---------- */

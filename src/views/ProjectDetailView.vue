@@ -1,21 +1,26 @@
 <!-- ProjectDetailView — full case-study page for a single project (/projects/:id). -->
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { getProject } from '@/data/projects'
+import { useBackNav } from '@/composables/useBackNav'
 import GlassWindow from '@/components/layout/GlassWindow.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
+import LivePreviewPanel from '@/components/widgets/LivePreviewPanel.vue'
 
 const route = useRoute()
 const project = computed(() => getProject(String(route.params.id)))
+const showPreview = ref(false)
+const hasSide = computed(() => Boolean(project.value?.ownership || project.value?.outcomes))
+const { goBack } = useBackNav()
 </script>
 
 <template>
   <main class="detail section">
     <div class="container">
-      <RouterLink to="/#projects" class="back">
+      <button type="button" class="back" @click="goBack">
         <AppIcon name="arrow" :size="16" class="flip" /> Back to projects
-      </RouterLink>
+      </button>
 
       <template v-if="project">
         <p class="eyebrow" :style="{ color: project.accent }">{{ project.category }}</p>
@@ -27,21 +32,37 @@ const project = computed(() => getProject(String(route.params.id)))
         </div>
 
         <div v-if="project.repo || project.demo" class="links">
+          <button
+            v-if="project.demo"
+            type="button"
+            class="btn btn-primary"
+            title="Opens the live, running app right here in an embedded browser view"
+            @click="showPreview = true"
+          >
+            <AppIcon name="play" :size="16" /> Run in Browser
+          </button>
           <a v-if="project.repo" :href="project.repo" target="_blank" rel="noopener" class="btn">
-            <AppIcon name="github" :size="17" /> View source
-          </a>
-          <a v-if="project.demo" :href="project.demo" target="_blank" rel="noopener" class="btn btn-primary">
-            <AppIcon name="external" :size="16" /> Open live app
+            <AppIcon name="github" :size="17" /> View Source Code
           </a>
         </div>
+        <p v-if="project.demo" class="links-hint">
+          "Run in Browser" opens the live app right here, in an embedded view — no need to leave this page.
+        </p>
 
-        <div class="layout">
+        <LivePreviewPanel
+          v-if="project.demo"
+          v-model="showPreview"
+          :url="project.demo"
+          :title="project.title"
+        />
+
+        <div class="layout" :class="{ 'no-side': !hasSide }">
           <div class="main">
-            <GlassWindow title="overview.md">
+            <GlassWindow title="Overview">
               <p v-for="(para, i) in project.description" :key="i" class="para">{{ para }}</p>
             </GlassWindow>
 
-            <GlassWindow title="highlights" class="block">
+            <GlassWindow title="Highlights" class="block">
               <ul class="ticks">
                 <li v-for="h in project.highlights" :key="h">
                   <AppIcon name="arrow" :size="15" :style="{ color: project.accent }" /> {{ h }}
@@ -50,14 +71,14 @@ const project = computed(() => getProject(String(route.params.id)))
             </GlassWindow>
           </div>
 
-          <aside class="side">
-            <div v-if="project.ownership" class="glass panel">
+          <aside v-if="hasSide" class="side">
+            <div v-if="project.ownership" class="surface panel">
               <h3>End-to-end ownership</h3>
               <ol class="steps">
                 <li v-for="s in project.ownership" :key="s">{{ s }}</li>
               </ol>
             </div>
-            <div v-if="project.outcomes" class="glass panel">
+            <div v-if="project.outcomes" class="surface panel">
               <h3>Outcomes</h3>
               <ul class="dots">
                 <li v-for="o in project.outcomes" :key="o">{{ o }}</li>
@@ -67,7 +88,7 @@ const project = computed(() => getProject(String(route.params.id)))
         </div>
       </template>
 
-      <div v-else class="missing glass">
+      <div v-else class="missing surface">
         <h2>Project not found</h2>
         <RouterLink to="/#projects" class="btn btn-primary">Back to projects</RouterLink>
       </div>
@@ -120,6 +141,11 @@ const project = computed(() => getProject(String(route.params.id)))
   gap: var(--sp-3);
   margin-top: var(--sp-4);
 }
+.links-hint {
+  color: var(--text-faint);
+  font-size: 0.82rem;
+  margin-top: var(--sp-2);
+}
 .layout {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
@@ -127,7 +153,11 @@ const project = computed(() => getProject(String(route.params.id)))
   margin-top: var(--sp-6);
   align-items: start;
 }
+.layout.no-side {
+  grid-template-columns: 1fr;
+}
 .para {
+  max-width: 74ch;
   color: var(--text-dim);
   line-height: 1.75;
   margin-bottom: var(--sp-3);
@@ -149,6 +179,7 @@ const project = computed(() => getProject(String(route.params.id)))
 .ticks li {
   display: flex;
   gap: var(--sp-2);
+  max-width: 74ch;
   color: var(--text-dim);
 }
 .side {
@@ -189,7 +220,7 @@ const project = computed(() => getProject(String(route.params.id)))
   font-size: 0.75rem;
   font-weight: 700;
   color: #fff;
-  background: linear-gradient(140deg, var(--accent), var(--accent-2));
+  background: var(--accent);
 }
 .dots li {
   position: relative;
@@ -205,7 +236,7 @@ const project = computed(() => getProject(String(route.params.id)))
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--accent-2);
+  background: var(--accent);
 }
 .missing {
   padding: var(--sp-8) var(--sp-5);

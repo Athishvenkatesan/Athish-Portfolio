@@ -24,13 +24,19 @@ export const profile = {
   phoneDisplay: '+91 95859 91586',
   /** International format, no symbols — used for the wa.me deep link. */
   whatsapp: '919585991586',
+  /** Secondary (UAE) mobile number. */
+  phoneDisplaySecondary: '+971 50 840 0586',
+  /** International format, no symbols — used for the tel: link. */
+  phoneSecondary: '971508400586',
   whatsappMessage:
     "Hi Athish, I came across your portfolio and I'd love to connect with you regarding an opportunity.",
   linkedin: 'https://www.linkedin.com/in/athish-venkatesan',
   /** Square head-and-shoulders crop — used for avatars. null = "AV" monogram. */
   photo: '/profile-face.jpg' as string | null,
-  /** Full-length portrait — used for the hero visual. */
-  portrait: '/profile-full.jpg' as string | null,
+  /** Hero visual — transparent-background cutout (WebP; ~92KB). */
+  portrait: '/profile-ai-portrait.webp' as string | null,
+  /** PNG fallback for `portrait`, for browsers without WebP support. */
+  portraitFallback: '/profile-ai-portrait.png' as string | null,
   resumePath: '/AthishV-Resume.pdf',
   github: 'https://github.com/Athishvenkatesan',
 
@@ -42,7 +48,8 @@ export const socials: SocialLink[] = [
   { label: 'LinkedIn', href: profile.linkedin, icon: 'linkedin' },
   { label: 'GitHub', href: profile.github, icon: 'github' },
   { label: 'Email', href: `mailto:${profile.email}`, icon: 'mail' },
-  { label: 'Phone', href: `tel:+${profile.whatsapp}`, icon: 'phone' },
+  { label: 'Phone (India)', href: `tel:+${profile.whatsapp}`, icon: 'phone' },
+  { label: 'Phone (UAE)', href: `tel:+${profile.phoneSecondary}`, icon: 'phone' },
 ]
 
 /** Builds the WhatsApp click-to-chat deep link with a prefilled message. */

@@ -22,7 +22,7 @@ export const experience: ExperienceItem[] = [
   },
   {
     role: 'Junior RPA Developer',
-    org: 'ROR Technologies · Madurai',
+    org: 'Ducont Systems · Madurai',
     period: 'Jun 2025 – Oct 2025',
     points: [
       'Built Power Apps with dynamic filtering and SharePoint / Dataverse integration.',
@@ -33,7 +33,7 @@ export const experience: ExperienceItem[] = [
   },
   {
     role: 'AI & Hyper-Automation Intern',
-    org: 'ROR Technologies · Madurai',
+    org: 'Ducont Systems · Madurai',
     period: 'Dec 2024 – Jun 2025',
     points: [
       'Six-month internship building business apps with Power Apps and automating workflows with Power Automate.',

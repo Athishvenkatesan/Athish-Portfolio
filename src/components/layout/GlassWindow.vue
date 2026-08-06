@@ -1,12 +1,11 @@
-<!-- GlassWindow — reusable macOS "window" card: traffic lights + title bar + slot. -->
+<!-- GlassWindow — reusable flat card: title bar + slot. -->
 <script setup lang="ts">
 defineProps<{ title?: string; subtitle?: string }>()
 </script>
 
 <template>
-  <div class="window glass">
+  <div class="window surface">
     <div class="titlebar">
-      <span class="lights" aria-hidden="true"><i /><i /><i /></span>
       <span v-if="title" class="title">{{ title }}</span>
       <span v-if="subtitle" class="subtitle">{{ subtitle }}</span>
     </div>
@@ -19,34 +18,14 @@ defineProps<{ title?: string; subtitle?: string }>()
 <style scoped>
 .window {
   overflow: hidden;
-  border-radius: var(--r-lg);
 }
 .titlebar {
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  padding: 11px 16px;
+  padding: 13px 16px;
   border-bottom: 1px solid var(--glass-border);
   background: var(--glass-hi);
-}
-.lights {
-  display: inline-flex;
-  gap: 7px;
-}
-.lights i {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: block;
-}
-.lights i:nth-child(1) {
-  background: #ff5f57;
-}
-.lights i:nth-child(2) {
-  background: #febc2e;
-}
-.lights i:nth-child(3) {
-  background: #28c840;
 }
 .title {
   font-size: 0.85rem;

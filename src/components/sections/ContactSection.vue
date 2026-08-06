@@ -1,6 +1,7 @@
 <!-- ContactSection — CTA + contact methods + mailto form + footer. -->
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { RouterLink } from 'vue-router'
 import { profile, whatsappLink } from '@/data/profile'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
@@ -15,7 +16,13 @@ const mailtoHref = computed(() => {
 
 const methods = [
   { icon: 'mail', label: 'Email', value: profile.email, href: `mailto:${profile.email}` },
-  { icon: 'phone', label: 'Phone', value: profile.phoneDisplay, href: `tel:+${profile.whatsapp}` },
+  { icon: 'phone', label: 'Phone (India)', value: profile.phoneDisplay, href: `tel:+${profile.whatsapp}` },
+  {
+    icon: 'phone',
+    label: 'Phone (UAE)',
+    value: profile.phoneDisplaySecondary,
+    href: `tel:+${profile.phoneSecondary}`,
+  },
   { icon: 'linkedin', label: 'LinkedIn', value: 'athish-venkatesan', href: profile.linkedin },
 ]
 const year = new Date().getFullYear()
@@ -24,9 +31,9 @@ const year = new Date().getFullYear()
 <template>
   <section id="contact" class="section">
     <div class="container">
-      <div class="cta-card glass" v-reveal>
+      <div class="cta-card surface" v-reveal>
         <p class="eyebrow">Contact</p>
-        <h2 class="big">Let's build something <span class="gradient-text">together</span>.</h2>
+        <h2 class="big">Let's build something <span class="accent">together</span></h2>
         <p class="lead">
           Open to front-end, Power Platform and AI automation roles. The fastest way to reach me is WhatsApp.
         </p>
@@ -59,8 +66,8 @@ const year = new Date().getFullYear()
       </div>
 
       <footer class="footer">
-        <span>© {{ year }} {{ profile.name }}</span>
-        <span>Built with Vue 3 · Vite · macOS-glass UI</span>
+        <span>Copyrights © {{ year }} {{ profile.name }}</span>
+        <RouterLink to="/analysis" class="footer-link">Analysis</RouterLink>
       </footer>
     </div>
   </section>
@@ -80,6 +87,9 @@ const year = new Date().getFullYear()
   letter-spacing: -0.02em;
   margin-top: var(--sp-3);
 }
+.accent {
+  color: var(--accent);
+}
 .lead {
   color: var(--text-dim);
   max-width: 50ch;
@@ -94,7 +104,7 @@ const year = new Date().getFullYear()
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--sp-3);
   margin-top: var(--sp-6);
   text-align: left;
@@ -178,6 +188,14 @@ textarea:focus {
   padding-top: var(--sp-5);
   color: var(--text-faint);
   font-size: 0.84rem;
+}
+.footer-link {
+  font-weight: 600;
+  color: var(--text-dim);
+  transition: color var(--dur-fast) var(--ease);
+}
+.footer-link:hover {
+  color: var(--accent);
 }
 @media (max-width: 680px) {
   .grid {

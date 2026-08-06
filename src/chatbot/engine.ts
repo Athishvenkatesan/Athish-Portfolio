@@ -5,11 +5,13 @@
  * a live Claude call, replace the body of askBot() with a fetch to a
  * serverless endpoint. Everything that calls askBot() stays unchanged.
  */
-import { intents, fallback } from './knowledge'
+import { intents, fallback, suggestions, type ChatChartKind } from './knowledge'
 
 export interface BotReply {
   text: string
   intent: string
+  chart?: ChatChartKind
+  followUps: string[]
 }
 
 function normalize(input: string): string {
@@ -40,7 +42,12 @@ function matchIntent(input: string) {
 export async function askBot(message: string): Promise<BotReply> {
   const intent = matchIntent(message)
   if (intent) {
-    return { text: intent.answer(), intent: intent.id }
+    return {
+      text: intent.answer(),
+      intent: intent.id,
+      chart: intent.chart,
+      followUps: intent.followUps ?? suggestions,
+    }
   }
-  return { text: fallback, intent: 'fallback' }
+  return { text: fallback, intent: 'fallback', followUps: suggestions }
 }

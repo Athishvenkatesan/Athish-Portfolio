@@ -1,18 +1,25 @@
 <!--
   ChatBot — floating macOS-style assistant window.
-  Uses askBot() (scripted engine, AI-upgrade-ready). Renders safe mini-markdown.
+  Uses askBot() (scripted engine, AI-upgrade-ready). Renders safe mini-markdown,
+  plus an inline chart for questions that carry one (see knowledge.ts `chart`),
+  and swaps the suggestion row to that reply's follow-ups so the conversation
+  has an obvious next step instead of resetting every turn.
 -->
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
+import { RouterLink } from 'vue-router'
 import { askBot } from '@/chatbot/engine'
-import { greeting, suggestions } from '@/chatbot/knowledge'
+import { greeting, suggestions as starterSuggestions, type ChatChartKind } from '@/chatbot/knowledge'
 import { renderMini } from '@/utils/miniMarkdown'
 import { profile } from '@/data/profile'
 import AppIcon from '@/components/ui/AppIcon.vue'
+import SkillRadarChart from '@/components/charts/SkillRadarChart.vue'
+import TopSkillsBars from '@/components/charts/TopSkillsBars.vue'
 
 interface Msg {
   from: 'bot' | 'user'
   html: string
+  chart?: ChatChartKind
 }
 
 const open = ref(false)
@@ -20,6 +27,7 @@ const input = ref('')
 const typing = ref(false)
 const scroller = ref<HTMLElement | null>(null)
 const messages = ref<Msg[]>([{ from: 'bot', html: renderMini(greeting) }])
+const activeSuggestions = ref<string[]>(starterSuggestions)
 
 async function scrollDown() {
   await nextTick()
@@ -38,7 +46,8 @@ async function send(text?: string) {
   // Small delay so the typing indicator reads naturally.
   window.setTimeout(async () => {
     typing.value = false
-    messages.value.push({ from: 'bot', html: renderMini(reply.text) })
+    messages.value.push({ from: 'bot', html: renderMini(reply.text), chart: reply.chart })
+    activeSuggestions.value = reply.followUps
     await scrollDown()
   }, 480)
 }
@@ -52,7 +61,7 @@ function toggle() {
 <template>
   <div class="chat-root">
     <transition name="pop">
-      <section v-if="open" class="panel glass" role="dialog" aria-label="Portfolio assistant">
+      <section v-if="open" class="panel surface" role="dialog" aria-label="Portfolio assistant">
         <header class="head">
           <span class="avatar">{{ profile.initials }}</span>
           <div class="who">
@@ -63,16 +72,25 @@ function toggle() {
         </header>
 
         <div ref="scroller" class="messages">
-          <div v-for="(m, i) in messages" :key="i" class="msg" :class="m.from">
-            <span class="bubble" v-html="m.html" />
-          </div>
-          <div v-if="typing" class="msg bot">
-            <span class="bubble typing"><i /><i /><i /></span>
-          </div>
+          <transition-group name="msg" tag="div" class="messages-inner">
+            <div v-for="(m, i) in messages" :key="i" class="msg" :class="m.from">
+              <div class="bubble-col">
+                <span class="bubble" v-html="m.html" />
+                <div v-if="m.chart" class="chart-card">
+                  <SkillRadarChart v-if="m.chart === 'skills-radar'" :size="200" :show-labels="false" />
+                  <TopSkillsBars v-else-if="m.chart === 'top-skills'" :limit="5" compact />
+                  <RouterLink to="/analysis" class="chart-link">Open full Analysis <AppIcon name="arrow" :size="12" /></RouterLink>
+                </div>
+              </div>
+            </div>
+            <div v-if="typing" key="typing" class="msg bot">
+              <span class="bubble typing"><i /><i /><i /></span>
+            </div>
+          </transition-group>
         </div>
 
         <div class="suggestions">
-          <button v-for="s in suggestions" :key="s" class="sugg" @click="send(s)">{{ s }}</button>
+          <button v-for="s in activeSuggestions" :key="s" class="sugg" @click="send(s)">{{ s }}</button>
         </div>
 
         <form class="composer" @submit.prevent="send()">
@@ -104,7 +122,7 @@ function toggle() {
   height: 56px;
   border-radius: 50%;
   color: #fff;
-  background: linear-gradient(140deg, var(--accent), var(--accent-2));
+  background: var(--accent);
   box-shadow: 0 10px 28px var(--accent-soft);
   transition: transform var(--dur-fast) var(--ease);
 }
@@ -120,7 +138,6 @@ function toggle() {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: var(--r-lg);
 }
 .head {
   display: flex;
@@ -139,7 +156,7 @@ function toggle() {
   font-weight: 800;
   font-size: 0.85rem;
   color: #fff;
-  background: linear-gradient(140deg, var(--accent), var(--accent-2));
+  background: var(--accent);
 }
 .who {
   display: flex;
@@ -169,9 +186,19 @@ function toggle() {
   flex: 1;
   overflow-y: auto;
   padding: var(--sp-4);
+}
+.messages-inner {
   display: flex;
   flex-direction: column;
   gap: var(--sp-3);
+}
+/* New message entrance — replaces the previous "just appears" snap-in. */
+.msg-enter-active {
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.msg-enter-from {
+  opacity: 0;
+  transform: translateY(10px) scale(0.98);
 }
 .msg {
   display: flex;
@@ -179,8 +206,13 @@ function toggle() {
 .msg.user {
   justify-content: flex-end;
 }
-.bubble {
+.bubble-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   max-width: 84%;
+}
+.bubble {
   padding: 10px 14px;
   border-radius: 16px;
   font-size: 0.9rem;
@@ -193,15 +225,34 @@ function toggle() {
 }
 .msg.user .bubble {
   color: #fff;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  background: var(--accent);
   border-bottom-right-radius: 5px;
 }
 .bubble :deep(a) {
-  color: var(--accent-2);
+  color: var(--accent);
   text-decoration: underline;
 }
 .msg.user .bubble :deep(a) {
   color: #fff;
+}
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px;
+  border-radius: var(--r-md);
+  background: var(--chip-bg);
+  border: 1px solid var(--chip-border);
+}
+.chart-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  align-self: flex-start;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--accent);
 }
 .typing {
   display: inline-flex;
@@ -274,7 +325,7 @@ function toggle() {
   height: 40px;
   border-radius: 50%;
   color: #fff;
-  background: linear-gradient(140deg, var(--accent), var(--accent-2));
+  background: var(--accent);
 }
 .send:disabled {
   opacity: 0.5;

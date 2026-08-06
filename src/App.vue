@@ -2,7 +2,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterView } from 'vue-router'
-import BgBlobs from '@/components/layout/BgBlobs.vue'
 import MenuBar from '@/components/layout/MenuBar.vue'
 import AppDock from '@/components/layout/AppDock.vue'
 import ChatBot from '@/components/widgets/ChatBot.vue'
@@ -13,7 +12,6 @@ const palette = ref<InstanceType<typeof CommandPalette> | null>(null)
 </script>
 
 <template>
-  <BgBlobs />
   <MenuBar @open-palette="palette?.show()" />
 
   <RouterView v-slot="{ Component }">

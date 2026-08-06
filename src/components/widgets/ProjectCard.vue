@@ -1,15 +1,18 @@
-<!-- ProjectCard — glass project card with hover tilt and source/live actions. -->
+<!-- ProjectCard — flat project card with hover lift and source/live actions. -->
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { Project } from '@/data/projects'
 import { RouterLink } from 'vue-router'
 import AppIcon from '@/components/ui/AppIcon.vue'
+import LivePreviewPanel from '@/components/widgets/LivePreviewPanel.vue'
 
 defineProps<{ project: Project }>()
+
+const showPreview = ref(false)
 </script>
 
 <template>
-  <article class="card glass" :class="{ featured: project.featured }">
-    <div class="glow" :style="{ background: project.accent }" />
+  <article class="card surface" :class="{ featured: project.featured }">
     <header class="top">
       <span class="cat" :style="{ color: project.accent }">{{ project.category }}</span>
       <span v-if="project.featured" class="badge star">★ Featured</span>
@@ -30,30 +33,35 @@ defineProps<{ project: Project }>()
       </RouterLink>
 
       <span v-if="project.repo || project.demo" class="ext-links">
+        <button
+          v-if="project.demo"
+          type="button"
+          class="ext live"
+          title="Opens the live, running app right here in an embedded browser view"
+          @click.stop="showPreview = true"
+        >
+          <AppIcon name="play" :size="14" /> Run in Browser
+        </button>
         <a
           v-if="project.repo"
           :href="project.repo"
           target="_blank"
           rel="noopener"
           class="ext"
-          aria-label="View source on GitHub"
+          aria-label="View source code on GitHub"
           @click.stop
         >
-          <AppIcon name="github" :size="16" />
-        </a>
-        <a
-          v-if="project.demo"
-          :href="project.demo"
-          target="_blank"
-          rel="noopener"
-          class="ext live"
-          aria-label="Open the live app in a new tab"
-          @click.stop
-        >
-          <AppIcon name="external" :size="15" /> Live
+          <AppIcon name="github" :size="16" /> View Source Code
         </a>
       </span>
     </footer>
+
+    <LivePreviewPanel
+      v-if="project.demo"
+      v-model="showPreview"
+      :url="project.demo"
+      :title="project.title"
+    />
   </article>
 </template>
 
@@ -69,22 +77,6 @@ defineProps<{ project: Project }>()
 .card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-2);
-}
-.glow {
-  position: absolute;
-  top: -40%;
-  right: -20%;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  filter: blur(70px);
-  opacity: 0.18;
-  pointer-events: none;
-  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-.card:hover .glow {
-  opacity: 0.34;
-  transform: translate(-10px, 10px) scale(1.1);
 }
 .featured {
   grid-column: span 2;
@@ -112,7 +104,7 @@ defineProps<{ project: Project }>()
   background: rgba(254, 188, 46, 0.12);
 }
 .free {
-  color: var(--accent-2);
+  color: var(--accent);
   background: var(--chip-bg);
   border: 1px solid var(--chip-border);
 }
@@ -194,7 +186,7 @@ defineProps<{ project: Project }>()
 }
 .ext.live {
   color: #fff;
-  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  background: var(--accent);
   border-color: transparent;
 }
 @media (max-width: 760px) {

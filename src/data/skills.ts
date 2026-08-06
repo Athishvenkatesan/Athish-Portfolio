@@ -9,10 +9,15 @@ export interface Skill {
   level: number
 }
 
+export type SkillVariant = 'bars' | 'radial' | 'meter' | 'dots' | 'tags' | 'columns'
+
 export interface SkillGroup {
   title: string
   icon: string
   blurb: string
+  /** Which visual form SkillsSection renders this group as — varied on purpose so
+   *  six cards on one screen don't all show the identical bar chart. */
+  variant: SkillVariant
   skills: Skill[]
 }
 
@@ -21,6 +26,7 @@ export const skillGroups: SkillGroup[] = [
     title: 'Front-End Engineering',
     icon: 'code',
     blurb: 'Modern, type-safe single-page apps.',
+    variant: 'bars',
     skills: [
       { name: 'React 19', level: 88 },
       { name: 'TypeScript (strict)', level: 86 },
@@ -34,6 +40,7 @@ export const skillGroups: SkillGroup[] = [
     title: 'UI & Component Systems',
     icon: 'layout',
     blurb: 'Design-system-driven, accessible interfaces.',
+    variant: 'radial',
     skills: [
       { name: 'Fluent UI v9', level: 85 },
       { name: 'React Router', level: 84 },
@@ -45,6 +52,7 @@ export const skillGroups: SkillGroup[] = [
     title: 'Animation & Data',
     icon: 'spark',
     blurb: 'Motion, reporting and document generation.',
+    variant: 'meter',
     skills: [
       { name: 'GSAP animation', level: 78 },
       { name: 'jsPDF (PDF export)', level: 80 },
@@ -56,9 +64,10 @@ export const skillGroups: SkillGroup[] = [
     title: 'Integration & APIs',
     icon: 'plug',
     blurb: 'Connecting front-ends to enterprise data.',
+    variant: 'dots',
     skills: [
       { name: 'Dataverse Web API', level: 84 },
-      { name: 'REST integration', level: 82 },
+      { name: 'Postman integration', level: 82 },
       { name: 'Microsoft Entra auth', level: 76 },
       { name: 'Git / version control', level: 84 },
     ],
@@ -66,7 +75,8 @@ export const skillGroups: SkillGroup[] = [
   {
     title: 'Microsoft Power Platform',
     icon: 'grid',
-    blurb: 'Automation delivery across Ducont & ROR.',
+    blurb: 'Automation delivery at Ducont Systems.',
+    variant: 'tags',
     skills: [
       { name: 'Power Apps (incl. Code Apps)', level: 90 },
       { name: 'Power Automate', level: 90 },
@@ -80,6 +90,7 @@ export const skillGroups: SkillGroup[] = [
     title: 'Data Science & ML',
     icon: 'brain',
     blurb: 'M.Sc. Data Science foundation.',
+    variant: 'columns',
     skills: [
       { name: 'Python', level: 84 },
       { name: 'Machine Learning', level: 80 },

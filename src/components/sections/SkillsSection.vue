@@ -1,7 +1,17 @@
-<!-- SkillsSection — grouped capability cards with animated proficiency bars. -->
+<!--
+  SkillsSection — grouped capability cards. Each group renders one of six
+  visual forms (bars / radial rings / segmented meter / dot plot / tag cloud /
+  columns), set per-group in skills.ts, so no two cards on the page show the
+  same chart shape.
+-->
 <script setup lang="ts">
 import { skillGroups } from '@/data/skills'
 import AppIcon from '@/components/ui/AppIcon.vue'
+import SkillRadialGrid from '@/components/charts/SkillRadialGrid.vue'
+import SkillMeterList from '@/components/charts/SkillMeterList.vue'
+import SkillDotPlot from '@/components/charts/SkillDotPlot.vue'
+import SkillTagCloud from '@/components/charts/SkillTagCloud.vue'
+import SkillColumnChart from '@/components/charts/SkillColumnChart.vue'
 </script>
 
 <template>
@@ -17,7 +27,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
         <article
           v-for="(group, i) in skillGroups"
           :key="group.title"
-          class="card glass"
+          class="card surface"
           v-reveal="i * 70"
         >
           <header class="card-head">
@@ -27,7 +37,13 @@ import AppIcon from '@/components/ui/AppIcon.vue'
               <p>{{ group.blurb }}</p>
             </div>
           </header>
-          <ul class="skills">
+
+          <SkillRadialGrid v-if="group.variant === 'radial'" :skills="group.skills" />
+          <SkillMeterList v-else-if="group.variant === 'meter'" :skills="group.skills" />
+          <SkillDotPlot v-else-if="group.variant === 'dots'" :skills="group.skills" />
+          <SkillTagCloud v-else-if="group.variant === 'tags'" :skills="group.skills" />
+          <SkillColumnChart v-else-if="group.variant === 'columns'" :skills="group.skills" />
+          <ul v-else class="skills">
             <li v-for="s in group.skills" :key="s.name">
               <div class="skill-top">
                 <span class="skill-name">{{ s.name }}</span>
@@ -47,9 +63,19 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--sp-4);
   margin-top: var(--sp-6);
+}
+@media (max-width: 980px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 .card {
   padding: clamp(20px, 2.6vw, 28px);
@@ -115,18 +141,22 @@ import AppIcon from '@/components/ui/AppIcon.vue'
   height: 100%;
   width: var(--lvl);
   border-radius: var(--r-pill);
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  background: var(--accent);
   transform-origin: left;
+  /* Bars sit at zero width until the card scrolls into view — gating the
+     grow animation on .is-visible (instead of firing unconditionally at
+     mount) so it actually plays when the user sees it, not before. */
+  transform: scaleX(0);
+}
+.card.is-visible .fill {
   animation: grow 1.1s var(--ease) both;
 }
 @keyframes grow {
   from {
     transform: scaleX(0);
   }
-}
-@media (prefers-reduced-motion: reduce) {
-  .fill {
-    animation: none;
+  to {
+    transform: scaleX(1);
   }
 }
 </style>

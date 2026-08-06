@@ -13,9 +13,9 @@ const focus = ['React + TypeScript SPAs', 'Power Platform automation', 'Copilot 
       <h2 class="section-title" v-reveal>Building solutions, end to end</h2>
 
       <div class="about-grid">
-        <p class="about-text glass" v-reveal>{{ profile.about }}</p>
+        <p class="about-text surface" v-reveal>{{ profile.about }}</p>
 
-        <aside class="side glass" v-reveal="120">
+        <aside class="side surface" v-reveal="120">
           <div class="row">
             <span class="k">Focus</span>
             <div class="chips">

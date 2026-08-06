@@ -17,7 +17,7 @@ import { experience } from '@/data/experience'
           v-reveal="i * 90"
         >
           <span class="node" />
-          <div class="content glass">
+          <div class="content surface">
             <div class="head">
               <h3>{{ item.role }}</h3>
               <span class="period">{{ item.period }}</span>
@@ -49,7 +49,7 @@ import { experience } from '@/data/experience'
   top: 6px;
   bottom: 6px;
   width: 2px;
-  background: linear-gradient(var(--accent), var(--accent-2), transparent);
+  background: linear-gradient(var(--accent), transparent);
 }
 .item {
   position: relative;
@@ -83,7 +83,7 @@ import { experience } from '@/data/experience'
 .period {
   font-size: 0.8rem;
   font-family: var(--font-mono);
-  color: var(--accent-2);
+  color: var(--text-faint);
   white-space: nowrap;
 }
 .org {

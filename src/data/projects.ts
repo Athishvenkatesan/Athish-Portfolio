@@ -22,10 +22,15 @@ export interface Project {
   /** Optional "how Athish handled it end to end" ownership steps. */
   ownership?: string[]
   outcomes?: string[]
-  /** Public source link (GitHub) and optional live demo. */
+  /** Public source link (GitHub) — renders a "Source" button linking out to the repo. */
   repo?: string
+  /** Public live URL — renders a "Run in Browser" button that opens an in-page iframe preview (LivePreviewPanel). Omit if there's no publicly reachable deployment. */
   demo?: string
   accent: string
+  /** Approximate era this project was built in — powers the /analysis timeline. Display label. */
+  period: string
+  /** Sortable "YYYY-MM" (or a low placeholder for undated freelance work) backing `period`'s chronological order. */
+  periodStart: string
 }
 
 export const projects: Project[] = [
@@ -35,11 +40,13 @@ export const projects: Project[] = [
     category: 'React / Front-End',
     featured: true,
     accent: '#7c5cff',
+    period: 'Ducont Systems · Oct 2025 – Present',
+    periodStart: '2025-10',
     tagline: 'Enterprise demand-lifecycle SPA for DEWA — React 19 + TypeScript',
     summary:
-      'A React + TypeScript single-page application that consolidates the entire demand-to-delivery lifecycle into one centralized platform, replacing several disconnected systems for an enterprise client (DEWA).',
+      'A React + TypeScript single-page application that consolidates the entire demand-to-delivery lifecycle into one centralized platform, replacing several disconnected systems for DEWA (Dubai Electricity & Water Authority).',
     description: [
-      'D2D is a large enterprise single-page application built in React 19 and TypeScript (strict mode) on Vite. It unifies the full demand-to-delivery lifecycle — intake, evaluation, planning, execution, monitoring and closure — into one centralized platform, replacing multiple disconnected external systems.',
+      'D2D is an onsite engineering project for DEWA (Dubai Electricity & Water Authority) — a large enterprise single-page application built in React 19 and TypeScript (strict mode) on Vite. It unifies the full demand-to-delivery lifecycle — intake, evaluation, planning, execution, monitoring and closure — into one centralized platform, replacing multiple disconnected external systems.',
       'The app handles three distinct demand categories — Enhancement, New Solution / Turnkey, and POC — each with its own multi-stage, role-based approval flow. Stage-specific sections are gated by demand type and the current user’s role, so every actor only sees and acts on what is relevant to them.',
       'It is engineered around a clean service layer: every data operation goes through typed service classes, components never touch the API directly, and all loading, error and empty states are handled explicitly. Demand data can be exported to PDF (jsPDF) and Excel (SheetJS), with GSAP powering smooth stage transitions.',
     ],
@@ -81,11 +88,13 @@ export const projects: Project[] = [
     title: 'Transmission Power',
     category: 'Power Platform',
     accent: '#19c2a8',
-    tagline: 'Document approval workflow automation',
+    period: 'Ducont Systems · Oct 2025 – Present',
+    periodStart: '2025-10',
+    tagline: 'Document approval workflow automation for DEWA',
     summary:
-      'Automates and streamlines the organization-wide document approval workflow across roles like Central Planning Coordinator/Manager, Department Head and EVP Office Administrator.',
+      'An off-site engagement for DEWA (Dubai Electricity & Water Authority) that automates and streamlines the organization-wide document approval workflow across roles like Central Planning Coordinator/Manager, Department Head and EVP Office Administrator.',
     description: [
-      'Transmission Power automates a structured document approval cycle, moving reports and documents through clearly defined actions — Send Back, Send Comments, Approve and Reject — across multiple organizational roles.',
+      'Transmission Power is an off-site project delivered for DEWA (Dubai Electricity & Water Authority). It automates a structured document approval cycle, moving reports and documents through clearly defined actions — Send Back, Send Comments, Approve and Reject — across multiple organizational roles.',
       'It provides centralized document management with role-based access and real-time visibility across all departments, plus automated notifications and escalations to keep approvals moving.',
     ],
     stack: ['Power Apps', 'Power Automate', 'SharePoint', 'Dataverse'],
@@ -97,10 +106,38 @@ export const projects: Project[] = [
     ],
   },
   {
+    id: 'adnh-catering-key-it',
+    title: 'ADNHC Key IT Assessment',
+    category: 'Power Platform',
+    accent: '#d97706',
+    period: 'Ducont Systems · Oct 2025 – Present',
+    periodStart: '2025-10',
+    tagline: 'Role-based IT assessment workflow across UAE, KSA & Qatar',
+    summary:
+      'A Power Apps application for ADNH Catering that manages a full, role-based IT assessment workflow — Initiator, Responder and Reviewer — across UAE, KSA and Qatar, with SharePoint-backed data, automatic maturity scoring, and tiered Power Automate reminder emails.',
+    description: [
+      'ADNHC Key IT Assessment is a Power Apps application that manages a country-wide IT assessment process for UAE, KSA and Qatar end to end, through a role-based workflow of Initiator, Responder and Reviewer. The Initiator creates an assessment — name, year, due date, country and period — and either saves it as a draft or publishes it. Publishing automatically assigns the assessment to the required responders, updates role-based dashboards, stores every detail in SharePoint lists, and sends email notifications via Power Automate.',
+      'Responders answer each question with Yes/No, upload supporting evidence, add comments, and can save their progress as a draft to resume from the last answered question — with filters for Control Family, Control Area, Maturity Level, Owner and Expiry Status to navigate large question sets. On submission, the system calculates the maturity level, updates dashboards, and — once every responder has finished — routes the assessment to the Reviewer.',
+      "The Reviewer can accept or reject the submitted responses; a rejected assessment goes back to the responder as \"Action Needed\" for one final correction, and only one rejection round is allowed before the assessment completes automatically after the second review. Throughout, Power Automate drives a tiered reminder cadence — none in the first 15 days, weekly in the next 15, daily in the final 15 for responders, and daily for reviewers during their 7-day review window — to keep the whole assessment cycle on schedule.",
+    ],
+    stack: ['Power Apps', 'Power Automate', 'SharePoint'],
+    highlights: [
+      'Role-based workflow — Initiator, Responder and Reviewer each see only what applies to their stage',
+      'Multi-country assessments (UAE, KSA, Qatar) with country, year and period selection',
+      'Draft-and-resume responses with Yes/No answers, evidence attachments and comments',
+      'Automatic maturity-level calculation and dashboard updates on submission',
+      'Reviewer accept/reject flow — one rejection round before auto-completion',
+      'Tiered Power Automate reminder emails (15/15/15-day responder cadence, 7-day reviewer cadence)',
+      'Role-based dashboards with country filters, pagination and question-level filtering',
+    ],
+  },
+  {
     id: 'project-management-tool',
     title: 'Project Management Tool',
     category: 'Power Platform',
     accent: '#ff7ab6',
+    period: 'Ducont Systems · Jun 2025 – Oct 2025',
+    periodStart: '2025-06',
     tagline: 'Centralized task, issue and resource tracking',
     summary:
       'A centralized project management system that streamlines tracking of tasks, issues and resources across multiple teams with role-based access and automated workflows.',
@@ -121,6 +158,8 @@ export const projects: Project[] = [
     title: 'Handwriting Recognition (CNN)',
     category: 'Machine Learning',
     accent: '#7c5cff',
+    period: 'Generative AI Consortium · Nov 2024 – Apr 2025',
+    periodStart: '2024-11',
     tagline: 'Deep learning over 100k+ handwritten names',
     summary:
       'A Convolutional Neural Network approach to automatic handwriting recognition, tuned for higher accuracy and lower inference time on a dataset of 100,000+ handwritten names.',
@@ -141,6 +180,8 @@ export const projects: Project[] = [
     category: 'Web',
     freelance: true,
     accent: '#19c2a8',
+    period: 'Freelance',
+    periodStart: '2023-01',
     tagline: 'A job portal that streamlines campus placements',
     summary:
       'A full job-portal web app for campus placements: students register, browse companies, check eligibility and apply; placement officers track applied and selected students and broadcast updates to departments.',
@@ -157,6 +198,7 @@ export const projects: Project[] = [
       'Department-wide placement update broadcasts',
     ],
     repo: 'https://github.com/Athishvenkatesan/Campus_Requirement_System',
+    demo: 'https://athishvenkatesan.github.io/Campus_Requirement_System/',
   },
   {
     id: 'restaurant-billing-system',
@@ -164,6 +206,8 @@ export const projects: Project[] = [
     category: 'Web',
     freelance: true,
     accent: '#ff7ab6',
+    period: 'Freelance',
+    periodStart: '2023-01',
     tagline: 'Web-based POS & billing for restaurants',
     summary:
       'A PHP + MySQL restaurant billing system that automates customer billing, order tracking and payment processing — with split billing, tax/discount handling, sales reporting and multi-mode payments.',
@@ -180,6 +224,7 @@ export const projects: Project[] = [
       'Sales reporting for owners',
     ],
     repo: 'https://github.com/Athishvenkatesan/Restaurant_Billing_System',
+    demo: 'https://athishvenkatesan.github.io/Restaurant_Billing_System/',
   },
   {
     id: 'furniture-management-system',
@@ -187,6 +232,8 @@ export const projects: Project[] = [
     category: 'Web',
     freelance: true,
     accent: '#7c5cff',
+    period: 'Freelance',
+    periodStart: '2023-01',
     tagline: 'Online furniture booking & inventory',
     summary:
       'An online furniture booking platform where users browse, select and book furniture by category — with a PHP/MySQL backend that streamlines shopping for customers and inventory handling for sellers.',
@@ -202,12 +249,15 @@ export const projects: Project[] = [
       'Improved inventory handling for sellers',
     ],
     repo: 'https://github.com/Athishvenkatesan/Furniture_Management_System',
+    demo: 'https://athishvenkatesan.github.io/Furniture_Management_System/',
   },
   {
     id: 'cash-forecasting-agent',
     title: 'Cash Forecasting Agent',
     category: 'Copilot Agent',
     accent: '#19c2a8',
+    period: 'Ducont Systems · Oct 2025 – Present',
+    periodStart: '2025-10',
     tagline: 'Conversational finance cash-flow forecasting',
     summary:
       'A Copilot Studio agent that automates financial cash forecasting — letting finance teams input, analyze and predict cash inflows and outflows through guided, structured interactions.',
@@ -228,6 +278,8 @@ export const projects: Project[] = [
     title: 'IT Helpdesk Agent',
     category: 'Copilot Agent',
     accent: '#7c5cff',
+    period: 'Ducont Systems · Oct 2025 – Present',
+    periodStart: '2025-10',
     tagline: 'Conversational IT support & ticketing',
     summary:
       'A Copilot Studio agent that handles IT support requests through automation — a conversational interface for logging issues, tracking status and getting quick resolutions.',
@@ -248,6 +300,8 @@ export const projects: Project[] = [
     title: 'HR Onboarding Agent',
     category: 'Copilot Agent',
     accent: '#ff7ab6',
+    period: 'Ducont Systems · Oct 2025 – Present',
+    periodStart: '2025-10',
     tagline: 'Conversational employee onboarding',
     summary:
       'A Copilot Studio agent that digitizes employee onboarding — guiding new hires through information, formalities and HR resources conversationally.',

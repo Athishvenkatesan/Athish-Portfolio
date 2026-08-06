@@ -4,9 +4,11 @@ import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { projects } from '@/data/projects'
 import { whatsappLink, profile } from '@/data/profile'
+import { useSectionNav } from '@/composables/useSectionNav'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 const router = useRouter()
+const { goToSection } = useSectionNav()
 const open = ref(false)
 const query = ref('')
 const active = ref(0)
@@ -24,6 +26,15 @@ const base: Cmd[] = [
   { label: 'Skills', hint: 'Section', icon: 'code', run: () => goHash('skills') },
   { label: 'Experience', hint: 'Section', icon: 'grid', run: () => goHash('experience') },
   { label: 'Projects', hint: 'Section', icon: 'layout', run: () => goHash('projects') },
+  {
+    label: 'Analysis',
+    hint: 'Page',
+    icon: 'chart',
+    run: () => {
+      close()
+      router.push('/analysis')
+    },
+  },
   { label: 'Education & Awards', hint: 'Section', icon: 'cap', run: () => goHash('education') },
   { label: 'Contact', hint: 'Section', icon: 'mail', run: () => goHash('contact') },
   { label: 'Message on WhatsApp', hint: 'Open chat', icon: 'chat', run: () => openExt(whatsappLink()) },
@@ -49,11 +60,7 @@ watch(results, () => (active.value = 0))
 
 function goHash(id: string) {
   close()
-  if (router.currentRoute.value.path !== '/') {
-    router.push({ path: '/', hash: `#${id}` })
-  } else {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
+  goToSection(id)
 }
 function openExt(href: string) {
   close()
@@ -96,7 +103,7 @@ defineExpose({ show })
 <template>
   <transition name="fade">
     <div v-if="open" class="overlay" @click.self="close">
-      <div class="palette glass" role="dialog" aria-label="Command palette">
+      <div class="palette surface" role="dialog" aria-label="Command palette">
         <div class="field">
           <AppIcon name="search" :size="18" />
           <input
@@ -147,7 +154,6 @@ defineExpose({ show })
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: var(--r-lg);
 }
 .field {
   display: flex;

@@ -35,7 +35,7 @@ import { whatsappLink } from '@/data/profile'
   height: 56px;
   border-radius: 50%;
   color: #fff;
-  background: linear-gradient(140deg, #25d366, #128c7e);
+  background: #25d366;
   box-shadow: 0 10px 28px rgba(18, 140, 126, 0.45);
   transition: transform var(--dur-fast) var(--ease);
 }

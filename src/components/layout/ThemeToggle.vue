@@ -58,7 +58,7 @@ const { theme, toggle } = useTheme()
 }
 .is-dark .knob {
   transform: translateX(26px);
-  background: linear-gradient(140deg, var(--accent), var(--accent-2));
+  background: var(--accent);
 }
 .ic-sun {
   opacity: 1;

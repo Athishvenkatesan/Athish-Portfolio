@@ -11,7 +11,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
       <h2 class="section-title" v-reveal>Education, certifications & awards</h2>
 
       <div class="grid">
-        <div class="col glass" v-reveal>
+        <div class="col surface" v-reveal>
           <h3 class="col-title"><AppIcon name="cap" :size="18" /> Education</h3>
           <div v-for="e in education" :key="e.degree" class="edu">
             <h4>{{ e.degree }}</h4>
@@ -20,14 +20,14 @@ import AppIcon from '@/components/ui/AppIcon.vue'
           </div>
         </div>
 
-        <div class="col glass" v-reveal="90">
+        <div class="col surface" v-reveal="90">
           <h3 class="col-title"><AppIcon name="award" :size="18" /> Certifications</h3>
           <ul class="certs">
             <li v-for="c in certifications" :key="c">{{ c }}</li>
           </ul>
         </div>
 
-        <div class="col glass" v-reveal="180">
+        <div class="col surface" v-reveal="180">
           <h3 class="col-title"><AppIcon name="award" :size="18" /> Achievements</h3>
           <div v-for="a in achievements" :key="a.title" class="ach">
             <span class="rank">{{ a.rank }}</span>
@@ -82,7 +82,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
   margin-top: 4px;
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  color: var(--accent-2);
+  color: var(--text-dim);
 }
 .certs {
   list-style: none;
@@ -104,7 +104,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: linear-gradient(var(--accent), var(--accent-2));
+  background: var(--accent);
 }
 .ach {
   display: flex;
