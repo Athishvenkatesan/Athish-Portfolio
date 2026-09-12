@@ -156,9 +156,10 @@ const eras = computed<Era[]>(() => {
                     :key="p.id"
                     :to="`/projects/${p.id}`"
                     class="era-project"
-                    :style="{ borderColor: p.accent, color: p.accent }"
+                    :style="{ borderColor: p.accent }"
                   >
-                    {{ p.title }}
+                    <span class="era-project-title" :style="{ color: p.accent }">{{ p.title }}</span>
+                    <span class="era-project-stack">{{ p.stack.join(' · ') }}</span>
                   </RouterLink>
                 </div>
               </div>
@@ -307,21 +308,33 @@ const eras = computed<Era[]>(() => {
   font-weight: 700;
 }
 .era-projects {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: var(--sp-2);
   margin-top: var(--sp-3);
 }
 .era-project {
-  padding: 7px 14px;
-  border-radius: var(--r-pill);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 14px;
+  border-radius: var(--r-md);
   border: 1px solid;
-  font-size: 0.86rem;
-  font-weight: 600;
-  transition: transform var(--dur-fast) var(--ease);
+  background: var(--chip-bg);
+  transition: transform var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
 }
 .era-project:hover {
   transform: translateY(-2px);
+  background: var(--glass-hi);
+}
+.era-project-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+.era-project-stack {
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--text-faint);
 }
 
 @media (max-width: 820px) {

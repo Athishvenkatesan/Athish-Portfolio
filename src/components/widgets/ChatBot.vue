@@ -56,6 +56,7 @@ async function send(text?: string) {
 
 function toggle() {
   open.value = !open.value
+  document.body.classList.toggle('chat-lock', open.value)
   if (open.value) scrollDown()
 }
 </script>
@@ -63,7 +64,7 @@ function toggle() {
 <template>
   <div class="chat-root">
     <transition name="pop">
-      <section v-if="open" class="panel surface" role="dialog" aria-label="Portfolio assistant">
+      <section v-if="open" class="panel" role="dialog" aria-label="Portfolio assistant">
         <header class="head">
           <span class="avatar">{{ profile.initials }}</span>
           <div class="who">
@@ -145,6 +146,13 @@ function toggle() {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  /* Fully opaque, not the sitewide translucent .surface — a chat panel
+     needs a solid, consistent background so messages stay legible instead
+     of the page content ghosting through behind it while scrolling. */
+  background: var(--bg-2);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--r-2xl);
+  box-shadow: var(--shadow-2);
 }
 .head {
   display: flex;
@@ -192,7 +200,11 @@ function toggle() {
 .messages {
   flex: 1;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: var(--sp-4);
+}
+:global(body.chat-lock) {
+  overflow: hidden;
 }
 .messages-inner {
   display: flex;

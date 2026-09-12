@@ -7,6 +7,7 @@ import { useBackNav } from '@/composables/useBackNav'
 import GlassWindow from '@/components/layout/GlassWindow.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import LivePreviewPanel from '@/components/widgets/LivePreviewPanel.vue'
+import { CATEGORY_COLORS } from '@/components/charts/categoryColors'
 
 const route = useRoute()
 const project = computed(() => getProject(String(route.params.id)))
@@ -23,7 +24,7 @@ const { goBack } = useBackNav()
       </button>
 
       <template v-if="project">
-        <p class="eyebrow" :style="{ color: project.accent }">{{ project.category }}</p>
+        <p class="eyebrow" :style="{ color: CATEGORY_COLORS[project.category] }">{{ project.category }}</p>
         <h1 class="title">{{ project.title }}</h1>
         <p class="tagline">{{ project.tagline }}</p>
 

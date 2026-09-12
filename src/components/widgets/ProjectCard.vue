@@ -5,6 +5,7 @@ import type { Project } from '@/data/projects'
 import { RouterLink } from 'vue-router'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import LivePreviewPanel from '@/components/widgets/LivePreviewPanel.vue'
+import { CATEGORY_COLORS } from '@/components/charts/categoryColors'
 
 defineProps<{ project: Project }>()
 
@@ -14,7 +15,7 @@ const showPreview = ref(false)
 <template>
   <article class="card surface" :class="{ featured: project.featured }">
     <header class="top">
-      <span class="cat" :style="{ color: project.accent }">{{ project.category }}</span>
+      <span class="cat" :style="{ color: CATEGORY_COLORS[project.category] }">{{ project.category }}</span>
       <span v-if="project.featured" class="badge star">★ Featured</span>
       <span v-else-if="project.freelance" class="badge free">Freelance</span>
     </header>

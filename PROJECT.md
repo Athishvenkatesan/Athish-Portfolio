@@ -8,7 +8,18 @@ status: building
 
 # Athish V — Portfolio Website
 
-## Current State (2026-08-05)
+## Current State (2026-09-12)
+
+### Update 23 (2026-09-12) — Chatbot scroll fix + 5 new projects
+- **ChatBot background-scroll bug fixed:** opening the chat panel now adds a `chat-lock` class to `<body>` (toggled in `ChatBot.vue`'s `toggle()`), which sets `overflow: hidden` on the page while the panel is open — previously the page behind the fixed chat panel could still be scrolled with the mouse wheel/touch. Also added `overscroll-behavior: contain` to `.messages` so scrolling the message list at its top/bottom no longer chains into scrolling the page. Verified via Playwright at desktop and mobile widths: body scroll is fully locked while open, and released correctly on close; the internal message list still scrolls normally.
+- **5 new projects added to `src/data/projects.ts`**, sourced from their real GitHub repos (cloned and read directly — READMEs, PROJECT.md, transcripts — rather than guessed):
+  - **Attachment Application** — a Power Apps Code App (React 19 + Vite) that previews/downloads DEWA D2D SharePoint attachments via a Power Automate flow. `React / Front-End`.
+  - **Hab-Reeh Harmonic Assessment (Power Pages)** — a DEWA stakeholder engagement + solar harmonic/POC compliance assessment Power Pages site. `Power Platform`.
+  - **Marketing Operations Hub — Explainer Video**, **Al Sheraa Readiness Video**, **Al Sheraa CAIO Executive Report Video** — three Remotion (React 19 + TypeScript + ElevenLabs narration) animated videos built for DEWA. New `Video Production` category added to `ProjectCategory` (also wired into `categoryColors.ts`'s `CATEGORY_COLORS` map, which is a `Record<ProjectCategory, string>` so TypeScript enforces every category has a chart color).
+  - All 5 have `repo` links to their public GitHub repos; none have a `demo` (no public hosting). The two Al-Sheraa "Business Requirements Report" PDFs the owner mentioned were not available locally yet — deferred until the owner locates them.
+  - Verified: clean `vue-tsc --noEmit`, clean production build, all 5 cards render correctly with zero console errors (checked via Playwright), category filter picks up "Video Production" automatically per the existing data-driven convention.
+
+## Historical state (2026-08-05)
 
 Full site rebuilt onto a flat, spacious, Apple-marketing-page-inspired visual language (moved off "macOS glassmorphism"); project cards support one in-page "Run in Browser" live preview button plus a "View Source Code" GitHub link; new `/analysis` page visualizes skill strength + a project timeline; profile photo + GitHub freelance projects in place.
 

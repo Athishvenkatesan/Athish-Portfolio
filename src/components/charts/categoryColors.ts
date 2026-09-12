@@ -12,4 +12,5 @@ export const CATEGORY_COLORS: Record<ProjectCategory, string> = {
   'Copilot Agent': '#3b82f6',
   'Machine Learning': '#ff7ab6',
   Web: '#d97706',
+  'Video Production': '#007560',
 }
