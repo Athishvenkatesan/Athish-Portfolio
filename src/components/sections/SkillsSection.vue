@@ -20,7 +20,7 @@ import SkillColumnChart from '@/components/charts/SkillColumnChart.vue'
       <p class="eyebrow" v-reveal>Skills</p>
       <h2 class="section-title" v-reveal>A full-stack toolkit</h2>
       <p class="section-sub" v-reveal>
-        Front-end engineering leads — with deep Power Platform automation and a Data Science foundation underneath.
+        Front-end engineering leads — with deep Power Platform automation, Azure cloud services and a Data Science foundation underneath.
       </p>
 
       <div class="grid">

@@ -15,6 +15,7 @@ const items = [
   { id: 'projects', label: 'Projects', icon: 'layout' },
   { label: 'Analysis', icon: 'chart', to: '/analysis' },
   { id: 'education', label: 'Education', icon: 'cap' },
+  { id: 'certifications', label: 'Certifications', icon: 'award' },
   { id: 'contact', label: 'Contact', icon: 'mail' },
 ]
 

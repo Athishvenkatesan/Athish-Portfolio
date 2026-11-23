@@ -31,3 +31,5 @@ dist-ssr
 .env.*
 !.env.example
 vite.config.d.ts
+resume/.build/
+resume/resume.html

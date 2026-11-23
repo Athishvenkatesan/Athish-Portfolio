@@ -1,3 +1,5 @@
+import { certificationList } from './certifications'
+
 /** Experience timeline + education + certifications + achievements. */
 
 export interface ExperienceItem {
@@ -80,13 +82,10 @@ export const education: EducationItem[] = [
   { degree: 'B.Sc. Computer Science', institution: 'The American College, Madurai', score: 'CGPA 8.3 / 10' },
 ]
 
-export const certifications: string[] = [
-  'Machine Learning with Python — IBM Cloud',
-  'TensorFlow and Keras',
-  'UI/UX for Beginners',
-  'PHP with MySQL Connectivity',
-  'Java',
-]
+/** Flat title list — used by the chatbot. Full details live in certifications.ts. */
+export const certifications: string[] = certificationList.map((c) =>
+  c.issuer && c.date ? `${c.title} — ${c.issuer.split(' · ')[0]}, ${c.date}` : c.title,
+)
 
 export interface Achievement {
   rank: string

@@ -202,3 +202,9 @@ Vercel (framework: Vite). Push to GitHub → import in Vercel → auto-deploy on
 
 - Resume PDF served from `public/AthishV-Resume.pdf`.
 - Profile photo is optional: drop `public/profile.jpg` and set `profile.photo` to use it; otherwise an "AV" monogram renders.
+
+## 2026-11-23 — Certificates, new projects, resume rebuild
+- Added `src/data/certifications.ts` (15 credentials) + `public/certificates/*.jpg`; Credentials section now shows a thumbnail gallery that opens each certificate. `experience.ts` derives the chatbot's flat list from it.
+- Added 4 projects from GitHub: DGM Publishing Hub, IT Incident Resolution Agent Console, Rammas Summary Video, Video Studio pipeline.
+- Resume is now generated: `node resume/build-resume.mjs` → `public/AthishV-Resume.pdf` (3 pages, same data as the site; needs Google Chrome).
+- Later same day: title changed to "AI Engineer"; Certifications/Education tabs in header, dock and footer; chatbot upgraded (project/tech lookup, memory, action buttons, nudge); new Azure and Local AI & LLMs skill groups; Publishing Hub case study expanded; career objective rewritten.

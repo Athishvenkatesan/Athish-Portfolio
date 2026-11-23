@@ -17,37 +17,51 @@ import { experience, education, certifications, languages } from '@/data/experie
 
 export type ChatChartKind = 'skills-radar' | 'top-skills'
 
+/** A button under a bot reply: external/download link, router page, or home-page section. */
+export interface BotAction {
+  label: string
+  href?: string
+  to?: string
+  section?: string
+}
+
 export interface Intent {
   id: string
   keywords: string[]
   answer: () => string
   chart?: ChatChartKind
   followUps?: string[]
+  actions?: BotAction[]
 }
 
 export const suggestions = [
   'What are your skills?',
   'Give me a report',
-  'Tell me about the D2D project',
+  'Tell me about the Publishing Hub',
+  'Which projects used Power Automate?',
   'How can I contact you?',
   'Hire me',
 ]
 
-export const greeting = `👋 Hi! I'm Athish's portfolio assistant. Ask me about his **skills**, **projects** (like the React-based D2D system), **experience**, or how to **get in touch** — I can even pull up a quick chart.`
+export function getGreeting(name?: string): string {
+  const h = new Date().getHours()
+  const part = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'
+  return `👋 ${part}${name ? `, ${name}` : ''}! I'm Athish's portfolio assistant. Ask me about his **AI & agentic projects**, **skills**, **certifications**, **experience**, or how to **get in touch** — or just tap a suggestion below.`
+}
 
-export const fallback = `I'm a lightweight assistant 😊 — try asking about **skills**, **projects**, **experience**, **education**, **certifications**, or **contact**. You can also message Athish directly on [WhatsApp](${whatsappLink()}).`
+export const fallback = `Hmm, I didn't quite catch that 🤔 I'm a lightweight assistant — try asking about **skills**, **projects**, **experience**, **education**, **certifications**, or **contact**. You can also message Athish directly on [WhatsApp](${whatsappLink()}).`
 
 export const intents: Intent[] = [
   {
     id: 'greeting',
     keywords: ['hi', 'hello', 'hey', 'yo', 'greetings', 'good morning', 'good afternoon', 'good evening'],
-    answer: () => greeting,
+    answer: () => getGreeting(),
   },
   {
     id: 'skills',
     keywords: [
       'skill', 'tech', 'stack', 'technolog', 'know', 'good at', 'expertise', 'react', 'power platform',
-      'proficient', 'capable', 'strength', 'strong at', 'familiar with', 'toolkit', 'what can you do',
+      'azure', 'cloud', 'ollama', 'local ai', 'llm', 'proficient', 'capable', 'strength', 'strong at', 'familiar with', 'toolkit', 'what can you do',
     ],
     chart: 'skills-radar',
     answer: () => {
@@ -163,8 +177,14 @@ export const intents: Intent[] = [
       'engage', 'work with you',
     ],
     answer: () =>
-      `Athish is open to opportunities! He brings ${profile.experienceYears} years across React/TypeScript front-end and Power Platform automation.\n\nThe fastest way to start a conversation is [WhatsApp](${whatsappLink()}) or email ${profile.email}.`,
+      `Athish is open to opportunities! He's an **AI Engineer** with ${profile.experienceYears} years building agentic AI, Power Platform automation and React/TypeScript apps.\n\nThe fastest way to start a conversation is [WhatsApp](${whatsappLink()}) or email ${profile.email}.`,
     followUps: ['How can I contact you?', 'Give me a report'],
+  },
+  {
+    id: 'about',
+    keywords: ['about yourself', 'who are you', 'introduce', 'tell me about you ', 'tell me about athish', 'who is athish', 'bio'],
+    answer: () => `**${profile.name}** — ${profile.title}, based in ${profile.location}.\n\n${profile.about}`,
+    followUps: ['What are your skills?', 'Tell me about your projects', 'Hire me'],
   },
   {
     id: 'thanks',
@@ -172,3 +192,20 @@ export const intents: Intent[] = [
     answer: () => `You're welcome! 🙌 Feel free to reach out to Athish on [WhatsApp](${whatsappLink()}) anytime.`,
   },
 ]
+
+/** Action buttons shown under a reply, keyed by intent id. */
+const actionsById: Record<string, BotAction[]> = {
+  about: [{ label: 'Download resume', href: profile.resumePath }, { label: 'See projects', section: 'projects' }],
+  projects: [{ label: 'Open Projects', section: 'projects' }, { label: 'Full analysis', to: '/analysis' }],
+  experience: [{ label: 'Open Experience', section: 'experience' }],
+  education: [{ label: 'Open Education', section: 'education' }],
+  certifications: [{ label: 'View certificates', section: 'certifications' }],
+  skills: [{ label: 'Open Skills', section: 'skills' }],
+  contact: [
+    { label: 'WhatsApp', href: whatsappLink() },
+    { label: 'Email', href: `mailto:${profile.email}` },
+    { label: 'LinkedIn', href: profile.linkedin },
+  ],
+  hire: [{ label: 'WhatsApp', href: whatsappLink() }, { label: 'Download resume', href: profile.resumePath }],
+}
+for (const i of intents) i.actions = actionsById[i.id]

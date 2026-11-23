@@ -581,6 +581,127 @@ export const projects: Project[] = [
       'Reduced manual HR handholding during the onboarding process.',
     ],
   },
+  {
+    id: 'dgm-publishing-hub',
+    title: 'DGM Publishing Hub',
+    category: 'Web',
+    accent: '#007560',
+    period: 'Ducont Systems · Nov 2026',
+    periodStart: '2026-11',
+    tagline: 'One screen to publish a video to social media, with a local AI writing the copy',
+    summary:
+      'A proof-of-concept web app: upload a clip, let a local AI model write the title, caption and hashtags, then publish now or schedule it to Instagram and YouTube from a single screen.',
+    description: [
+      'Built for the DGM team as a proof of concept. Everything AI runs on the laptop through Ollama — no video, frame or text is sent to an AI cloud. A two-stage pipeline does the work: ffmpeg pulls six frames from the upload, a vision model (Qwen2.5-VL 7B) describes what it sees, and a text model (Qwen2.5 7B Instruct) turns that description into platform copy in English, Arabic or both.',
+      'The text model is prompted for strict JSON (Ollama JSON mode, temperature 0.4) and every answer is validated and cleaned before it reaches the screen: character limits are enforced, tags are de-duplicated, missing tags fall back to hashtags, and a bad response shows a clear "try Regenerate" message instead of breaking. Small-model quirks are corrected in code — for example, a YouTube category of "Nonprofits & Activism" is accepted only when the description actually mentions a campaign or cause.',
+      'Beyond captions, the local models produce a full YouTube package (three title options, summary, key points, call to action, tags, category with a reason and thumbnail ideas), rank candidate frames to pick the best thumbnail, and write short headlines for it. A rules layer also looks for signs a video was AI-generated — Content Credentials (C2PA), file metadata and AI-tool names, plus what the vision model sees — to suggest YouTube\'s AI-disclosure setting, always leaving the final choice to the user.',
+      'Every field is editable with live character-limit checks and post previews. Posts go out through the Zernio API now or scheduled (Asia/Dubai), YouTube uploads can carry a custom thumbnail applied once processing finishes, a history table tracks each post, accounts are managed in an in-app panel, and a second screen publishes to Facebook Pages through the Meta Graph API.',
+    ],
+    stack: ['React', 'Vite', 'FastAPI', 'Python', 'SQLite', 'Ollama', 'Qwen2.5-VL', 'Qwen2.5 Instruct', 'ffmpeg', 'Zernio API', 'Meta Graph API'],
+    highlights: [
+      'Two local models — vision (Qwen2.5-VL) then text (Qwen2.5) — fully on-device, no cloud AI',
+      'Strict-JSON prompting with validation, limits and fallbacks around every model answer',
+      'English, Arabic or bilingual copy; YouTube title options, tags, category and thumbnail headlines',
+      'AI-generation detection from C2PA, file metadata and vision signals to suggest YouTube disclosure',
+      'Publish now or schedule, with live previews and a self-refreshing status history',
+    ],
+    ownership: [
+      'Designed the single-screen publishing flow and the React front end.',
+      'Built the FastAPI backend, the Ollama prompt pipeline and the SQLite history store.',
+      'Integrated Zernio and the Meta Graph API, and wrote the backend test suite.',
+    ],
+    outcomes: [
+      'One upload-to-publish screen that replaces juggling separate AI and social-media tools.',
+      'Posts published end to end to Instagram and YouTube during testing.',
+    ],
+    repo: 'https://github.com/Athishvenkatesan/Publishing_Hub',
+  },
+  {
+    id: 'it-incident-resolution-agent',
+    title: 'IT Incident Resolution Agent Console',
+    category: 'React / Front-End',
+    accent: '#5e9bff',
+    period: 'Ducont Systems · Aug 2026',
+    periodStart: '2026-08',
+    tagline: 'Shadow-mode console for an agent that triages and resolves IT incidents',
+    summary:
+      'A Power Apps Code App (React 19 + TypeScript) that gives IT managers an inbox, incident detail, agent-run audit trail, knowledge base and role-based permissions for an AI incident-resolution agent.',
+    description: [
+      'Phase 1 MVP of an intelligent IT incident resolution agent, built around a business requirements analysis with Dataverse as the system of record. The console runs the agent in shadow mode — it proposes resolutions while humans stay in control — so the team can judge quality before granting autonomy.',
+      'Five pages ship in the MVP: Inbox, Incident Detail, Agent Runs, Knowledge Base, and Roles & Permissions with a nine-role capability matrix. All data access sits behind a Dataverse-shaped service layer so the mock data can be swapped for live Dataverse calls without UI changes.',
+    ],
+    stack: ['React 19', 'TypeScript', 'Vite', 'Power Apps Code Apps', 'Dataverse'],
+    highlights: [
+      'Shadow-mode agent runs with a reviewable audit trail',
+      'Nine-role RBAC capability matrix with side navigation',
+      'Data-service layer shaped like Dataverse for a no-UI-change switch to live data',
+    ],
+    ownership: [
+      'Turned the BRD into a five-page MVP and documented the open decisions and gaps.',
+      'Built the React + TypeScript console as a Power Apps Code App.',
+      'Modelled the RBAC matrix and the Dataverse-shaped service layer.',
+    ],
+    outcomes: [
+      'Gave stakeholders a working MVP to react to while the open design decisions are resolved.',
+      'Left a clean seam for connecting the real Dataverse backend.',
+    ],
+    repo: 'https://github.com/Athishvenkatesan/AgenticAI_Application',
+  },
+  {
+    id: 'rammas-summary-video',
+    title: 'Rammas Summary Video',
+    category: 'Video Production',
+    accent: '#007560',
+    period: 'Ducont Systems · Sep 2026',
+    periodStart: '2026-09',
+    tagline: '4½-minute narrated, animated summary of the Rammas AI assistant',
+    summary:
+      'A fully narrated Remotion + React video covering Rammas, its journey, capabilities, channels (including Alexa), a real WhatsApp demo clip and how it works.',
+    description: [
+      'An eight-scene, 1920×1080 video (about 4:29) built with Remotion and React. Narration is generated with ElevenLabs and every on-screen year, stat, badge, chip and card is timed to the narration\'s own word-level timestamps, so each element appears at the moment it is spoken.',
+      'Scenes cross-dissolve into one another and include a real WhatsApp screen recording, giving viewers the product story and a live example in one watch.',
+    ],
+    stack: ['Remotion', 'React', 'TypeScript', 'ElevenLabs (narration)', 'ffmpeg'],
+    highlights: [
+      '8 scenes, ~4½ minutes, narration synced at word level',
+      'Real WhatsApp demo clip embedded in the story',
+      'Full written transcript generated from the source for review',
+    ],
+    ownership: [
+      'Wrote the narration script and directed the ElevenLabs voice.',
+      'Built every scene composition and the timestamp-driven animation timing.',
+      'Produced the transcript and final render.',
+    ],
+    outcomes: ['Delivered a stakeholder-ready product video from source content.'],
+    repo: 'https://github.com/Athishvenkatesan/rammasVideo',
+  },
+  {
+    id: 'video-studio-pipeline',
+    title: 'Video Studio — AI Video Pipeline',
+    category: 'Video Production',
+    accent: '#ff8a3d',
+    period: 'Ducont Systems · Aug 2026',
+    periodStart: '2026-08',
+    tagline: 'Guided Remotion + ElevenLabs video creation for Claude Code and GitHub Copilot',
+    summary:
+      'A reusable AI-assistant workflow that takes a video from idea to narrated render: pick a format, scaffold scenes, iterate in Remotion Studio, draft a transcript, generate synced narration and merge the audio.',
+    description: [
+      'Packaged first as a Claude Code plugin (a step-by-step skill plus four helper scripts for versioned rendering, transcript generation, ElevenLabs text-to-speech and audio merging), then re-homed for GitHub Copilot using repo instructions and a /create-video prompt file — the same scripts, a different runtime.',
+      'Every video follows a mandatory DEWA visual design system but must use a genuinely different layout and animation language each time, which keeps a series of videos from looking templated.',
+    ],
+    stack: ['Remotion', 'ElevenLabs', 'Claude Code (plugin / skill)', 'GitHub Copilot', 'Node.js', 'ffmpeg', 'Bash'],
+    highlights: [
+      'Same playbook shipped for two AI coding assistants',
+      'Automatic versioned renders with backups',
+      'Transcript → voice selection → synced narration → merged final video',
+    ],
+    ownership: [
+      'Designed the end-to-end playbook and the helper scripts.',
+      'Ported the Claude Code skill to GitHub Copilot instructions and prompt files.',
+    ],
+    outcomes: ['Turns a multi-step manual video workflow into one guided, repeatable conversation.'],
+    repo: 'https://github.com/Athishvenkatesan/VideoGeneratorClaude',
+  },
 ]
 
 export function getProject(id: string): Project | undefined {

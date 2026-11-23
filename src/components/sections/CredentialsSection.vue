@@ -1,6 +1,7 @@
 <!-- CredentialsSection — education, certifications and achievements/awards. -->
 <script setup lang="ts">
-import { education, certifications, achievements } from '@/data/experience'
+import { education, achievements } from '@/data/experience'
+import { certificationList } from '@/data/certifications'
 import AppIcon from '@/components/ui/AppIcon.vue'
 </script>
 
@@ -21,13 +22,6 @@ import AppIcon from '@/components/ui/AppIcon.vue'
         </div>
 
         <div class="col surface" v-reveal="90">
-          <h3 class="col-title"><AppIcon name="award" :size="18" /> Certifications</h3>
-          <ul class="certs">
-            <li v-for="c in certifications" :key="c">{{ c }}</li>
-          </ul>
-        </div>
-
-        <div class="col surface" v-reveal="180">
           <h3 class="col-title"><AppIcon name="award" :size="18" /> Achievements</h3>
           <div v-for="a in achievements" :key="a.title" class="ach">
             <span class="rank">{{ a.rank }}</span>
@@ -38,6 +32,32 @@ import AppIcon from '@/components/ui/AppIcon.vue'
           </div>
         </div>
       </div>
+
+      <h3 id="certifications" class="cert-heading" v-reveal><AppIcon name="award" :size="18" /> Certifications <span>{{ certificationList.length }}</span></h3>
+      <div class="cert-grid">
+        <article v-for="(c, i) in certificationList" :key="c.title" class="cert surface" v-reveal="(i % 3) * 70">
+          <a
+            v-if="c.image"
+            :href="c.image"
+            target="_blank"
+            rel="noopener"
+            class="thumb-link"
+            :aria-label="`View certificate: ${c.title}`"
+          >
+            <img :src="c.image" :alt="`${c.title} certificate`" loading="lazy" class="thumb" />
+          </a>
+          <div v-else class="thumb thumb-empty"><AppIcon name="award" :size="28" /></div>
+          <div class="cert-body">
+            <h4>{{ c.title }}</h4>
+            <p class="issuer">{{ c.issuer }}</p>
+            <p v-if="c.date || c.note" class="meta">{{ [c.date, c.note].filter(Boolean).join(' · ') }}</p>
+            <details v-if="c.courses" class="courses">
+              <summary>{{ c.courses.length }} courses</summary>
+              <ul><li v-for="x in c.courses" :key="x">{{ x }}</li></ul>
+            </details>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 </template>
@@ -45,7 +65,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--sp-4);
   margin-top: var(--sp-6);
 }
@@ -84,27 +104,85 @@ import AppIcon from '@/components/ui/AppIcon.vue'
   font-size: 0.8rem;
   color: var(--text-dim);
 }
-.certs {
-  list-style: none;
+.cert-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-7, 48px);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.cert-heading span {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+}
+.cert {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-3);
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.2s ease;
 }
-.certs li {
-  position: relative;
-  padding-left: 20px;
+.cert:hover {
+  border-color: var(--accent);
+}
+.thumb-link {
+  display: block;
+}
+.thumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: top;
+  border-bottom: 1px solid var(--glass-border);
+  background: var(--surface-2, rgba(127, 127, 127, 0.08));
+}
+.thumb-empty {
+  display: grid;
+  place-items: center;
+  color: var(--text-faint);
+  aspect-ratio: 16 / 7;
+}
+.cert-body {
+  padding: var(--sp-3) var(--sp-4) var(--sp-4);
+}
+.cert-body h4 {
+  font-size: 0.94rem;
+  font-weight: 600;
+}
+.issuer {
   color: var(--text-dim);
-  font-size: 0.92rem;
+  font-size: 0.82rem;
+  margin-top: 2px;
 }
-.certs li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 9px;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
+.meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  margin-top: 4px;
+}
+.courses {
+  margin-top: var(--sp-2);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+.courses summary {
+  cursor: pointer;
+  color: var(--accent);
+}
+.courses ul {
+  margin: var(--sp-2) 0 0 16px;
+  display: grid;
+  gap: 2px;
 }
 .ach {
   display: flex;

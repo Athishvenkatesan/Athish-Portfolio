@@ -6,10 +6,11 @@
   has an obvious next step instead of resetting every turn.
 -->
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import { askBot } from '@/chatbot/engine'
-import { greeting, suggestions as starterSuggestions, type ChatChartKind } from '@/chatbot/knowledge'
+import { askBot, resetMemory, typingDelay } from '@/chatbot/engine'
+import { getGreeting, suggestions as starterSuggestions, type ChatChartKind, type BotAction } from '@/chatbot/knowledge'
+import { useSectionNav } from '@/composables/useSectionNav'
 import { renderMini } from '@/utils/miniMarkdown'
 import { profile } from '@/data/profile'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -21,6 +22,7 @@ interface Msg {
   from: 'bot' | 'user'
   html: string
   chart?: ChatChartKind
+  actions?: BotAction[]
 }
 
 const { hidden } = useScrollDirection()
@@ -28,7 +30,44 @@ const open = ref(false)
 const input = ref('')
 const typing = ref(false)
 const scroller = ref<HTMLElement | null>(null)
-const messages = ref<Msg[]>([{ from: 'bot', html: renderMini(greeting) }])
+const messages = ref<Msg[]>([{ from: 'bot', html: renderMini(getGreeting()) }])
+const { goToSection } = useSectionNav()
+
+/** One-time nudge bubble beside the launcher (once per browser session). */
+const teaser = ref(false)
+let teaserTimer = 0
+onMounted(() => {
+  try {
+    if (sessionStorage.getItem('chat-teaser')) return
+  } catch {
+    /* storage blocked — still show it once */
+  }
+  teaserTimer = window.setTimeout(() => {
+    if (!open.value) teaser.value = true
+  }, 6000)
+})
+onUnmounted(() => window.clearTimeout(teaserTimer))
+function dismissTeaser() {
+  teaser.value = false
+  try {
+    sessionStorage.setItem('chat-teaser', '1')
+  } catch {
+    /* ignore */
+  }
+}
+
+function runAction(a: BotAction) {
+  if (a.section) {
+    toggle()
+    goToSection(a.section)
+  }
+}
+
+function resetChat() {
+  resetMemory()
+  messages.value = [{ from: 'bot', html: renderMini(getGreeting()) }]
+  activeSuggestions.value = starterSuggestions
+}
 const activeSuggestions = ref<string[]>(starterSuggestions)
 
 async function scrollDown() {
@@ -48,14 +87,15 @@ async function send(text?: string) {
   // Small delay so the typing indicator reads naturally.
   window.setTimeout(async () => {
     typing.value = false
-    messages.value.push({ from: 'bot', html: renderMini(reply.text), chart: reply.chart })
+    messages.value.push({ from: 'bot', html: renderMini(reply.text), chart: reply.chart, actions: reply.actions })
     activeSuggestions.value = reply.followUps
     await scrollDown()
-  }, 480)
+  }, typingDelay(reply.text))
 }
 
 function toggle() {
   open.value = !open.value
+  if (open.value) dismissTeaser()
   document.body.classList.toggle('chat-lock', open.value)
   if (open.value) scrollDown()
 }
@@ -71,6 +111,7 @@ function toggle() {
             <strong>Portfolio Assistant</strong>
             <span class="status"><i /> Online · usually instant</span>
           </div>
+          <button class="x" aria-label="Start a new chat" title="New chat" @click="resetChat"><AppIcon name="spark" :size="17" /></button>
           <button class="x" aria-label="Close chat" @click="toggle"><AppIcon name="close" :size="18" /></button>
         </header>
 
@@ -79,6 +120,13 @@ function toggle() {
             <div v-for="(m, i) in messages" :key="i" class="msg" :class="m.from">
               <div class="bubble-col">
                 <span class="bubble" v-html="m.html" />
+                <div v-if="m.actions?.length" class="actions">
+                  <template v-for="a in m.actions" :key="a.label">
+                    <RouterLink v-if="a.to" :to="a.to" class="act" @click="toggle">{{ a.label }}</RouterLink>
+                    <a v-else-if="a.href" :href="a.href" class="act" target="_blank" rel="noopener noreferrer">{{ a.label }}</a>
+                    <button v-else type="button" class="act" @click="runAction(a)">{{ a.label }}</button>
+                  </template>
+                </div>
                 <div v-if="m.chart" class="chart-card">
                   <SkillRadarChart v-if="m.chart === 'skills-radar'" :size="200" :show-labels="false" />
                   <TopSkillsBars v-else-if="m.chart === 'top-skills'" :limit="5" compact />
@@ -105,6 +153,13 @@ function toggle() {
       </section>
     </transition>
 
+    <transition name="pop">
+      <button v-if="teaser && !open" class="teaser" @click="toggle">
+        👋 Ask me about Athish's AI projects
+        <span class="teaser-x" role="button" aria-label="Dismiss" @click.stop="dismissTeaser">×</span>
+      </button>
+    </transition>
+
     <button
       class="launcher"
       :class="{ open, 'scroll-hidden': hidden && !open }"
@@ -122,6 +177,49 @@ function toggle() {
   right: 20px;
   bottom: 18px;
   z-index: 96;
+}
+.teaser {
+  position: absolute;
+  right: 68px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 8px 12px;
+  border-radius: var(--r-pill);
+  font-size: 0.82rem;
+  color: var(--text);
+  background: var(--bg-2);
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--shadow-2);
+}
+.teaser-x {
+  color: var(--text-faint);
+  font-size: 1rem;
+  line-height: 1;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.act {
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.act:hover {
+  background: var(--accent);
+  color: #fff;
 }
 .launcher {
   display: grid;

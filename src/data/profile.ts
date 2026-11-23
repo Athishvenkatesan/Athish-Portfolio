@@ -13,7 +13,7 @@ export const profile = {
   name: 'Athish V',
   initials: 'AV',
   /** Hero title — blends the current Ducont role with the Power Platform brand. */
-  title: 'Power Platform & Automation Engineer | React & TypeScript Front-End Developer',
+  title: 'AI Engineer',
   /** Secondary line that surfaces the React / front-end capability. */
   subtitle:
     'I design, build, and deploy enterprise-grade business applications and automation solutions using Microsoft Power Platform and modern web technologies.',
@@ -42,7 +42,7 @@ export const profile = {
   github: 'https://github.com/Athishvenkatesan',
 
   about:
-    'Automation Engineer at Ducont Systems in Dubai, building dynamic Power Apps integrated with SharePoint and Dataverse, automating workflows with Power Automate, and creating agentic AI solutions with Copilot Studio across Teams, M365 and web apps. Equally strong as a front-end engineer in React 19, TypeScript and Vite — I build end-to-end workflows, integrate enterprise systems and craft clean, responsive interfaces, with a focus on solving real business problems in fast-moving team environments.',
+    'Automation Engineer at Ducont Systems in Dubai, building agentic AI solutions for enterprise teams. I design Copilot Studio agents across Teams, M365 and web apps, backed by Power Automate workflows, Power Apps, SharePoint and Dataverse. I also build AI-powered applications with React 19, TypeScript and Python — including local-LLM tools (Ollama) and AI-driven video pipelines — on a foundation in machine learning, TensorFlow and LangGraph. I focus on turning real business problems into reliable, production-ready AI automation in fast-moving team environments.',
 }
 
 export const socials: SocialLink[] = [

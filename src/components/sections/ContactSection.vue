@@ -3,7 +3,10 @@
 import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { profile, whatsappLink } from '@/data/profile'
+import { useSectionNav } from '@/composables/useSectionNav'
 import AppIcon from '@/components/ui/AppIcon.vue'
+
+const { goToSection } = useSectionNav()
 
 const name = ref('')
 const message = ref('')
@@ -67,7 +70,10 @@ const year = new Date().getFullYear()
 
       <footer class="footer">
         <span>Copyrights © {{ year }} {{ profile.name }}</span>
-        <RouterLink to="/analysis" class="footer-link">Analysis</RouterLink>
+        <span class="footer-links">
+          <a href="#certifications" class="footer-link" @click.prevent="goToSection('certifications')">Certifications</a>
+          <RouterLink to="/analysis" class="footer-link">Analysis</RouterLink>
+        </span>
       </footer>
     </div>
   </section>
@@ -188,6 +194,10 @@ textarea:focus {
   padding-top: var(--sp-5);
   color: var(--text-faint);
   font-size: 0.84rem;
+}
+.footer-links {
+  display: flex;
+  gap: var(--sp-4);
 }
 .footer-link {
   font-weight: 600;
